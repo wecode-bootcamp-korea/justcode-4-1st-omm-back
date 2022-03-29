@@ -1,24 +1,23 @@
-import { createServer } from 'http'
-import express, { json } from 'express'
-// const { PrismaClient } = require('@prisma/client')
-import routes from './routes'
+const { createServer } = require("http");
+const express = require("express");
+const routes = require("./routes");
+const { PrismaClient } = require("@prisma/client");
 
-// const prisma = new PrismaClient()
+const app = express();
+const prisma = new PrismaClient();
 
-const app = express()
+app.use(express.json());
+app.use(routes);
 
-app.use(json())
-app.use(routes)
-
-const server = createServer(app)
+const server = createServer(app);
+const PORT = process.env.PORT;
 
 const start = async () => {
-    try {
-        server.listen(8000, () => console.log('Server is listening on 8000'))
-    } catch (err) {
-        console.log(err)
-        await prisma.$disconnect()
-    }
-}
+  try {
+    server.listen(PORT, () => console.log("Server is listening on " + PORT));
+  } catch (err) {
+    await prisma.$disconnect();
+  }
+};
 
-start()
+start();

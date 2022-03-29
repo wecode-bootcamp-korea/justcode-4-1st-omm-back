@@ -1,5 +1,3 @@
-function userService() {
+function userService() {}
 
-}
-
-export default { userService }
+module.exports = { userService };
