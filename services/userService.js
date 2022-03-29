@@ -1,3 +1,3 @@
-function userService() {}
+function UserService() {}
 
-module.exports = { userService };
+module.exports = { UserService };
