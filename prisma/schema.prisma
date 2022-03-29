@@ -1,0 +1,140 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id           Int       @id @default(autoincrement())
+  goso_id      Int
+  is_goso      Boolean   @default(true)
+  name         String
+  email        String
+  password     String
+  phone_number String
+  user_image   String
+  is_active    Boolean   @default(true)
+  created_at   DateTime? @default(now())
+  updated_at   DateTime? @default(now())
+
+  Goso Goso? @relation(fields: [goso_id], references: [id])
+
+  // Requests Requests[]
+  @@index([goso_id], name: "goso_id")
+  @@map("users")
+}
+
+model Goso {
+  id           Int       @id @default(autoincrement())
+  // user_id      Int       @unique
+  name         String
+  email        String
+  user_image   String
+  tag_number   String
+  phone_number String
+  intro        String
+  location     String
+  is_active    Boolean   @default(true)
+  created_at   DateTime? @default(now())
+  updated_at   DateTime? @default(now())
+
+  // users Users @relation(fields: [user_id], references: [id])
+
+  // Users Users?
+
+  // @@index([user_id], name: "user_id")
+  Users              Users[]
+  GosoCategories     GosoCategories[]
+  GosoActivityImages GosoActivityImages[]
+  Review             Review[]
+  @@map("goso")
+}
+
+model GosoCategories {
+  id                  Int       @id @default(autoincrement())
+  goso_id             Int
+  child_categories_id Int
+  created_at          DateTime? @default(now())
+  updated_at          DateTime? @default(now())
+
+  Goso Goso? @relation(fields: [goso_id], references: [id])
+
+  ChildCategories ChildCategories? @relation(fields: [child_categories_id], references: [id])
+
+  @@index([goso_id], name: "goso_id")
+  @@index([child_categories_id], name: "child_categories_id")
+  @@map("goso_categories")
+}
+
+model GosoActivityImages {
+  id         Int       @id @default(autoincrement())
+  goso_id    Int
+  image_url  String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  Goso Goso? @relation(fields: [goso_id], references: [id])
+
+  @@index([goso_id], name: "goso_id")
+  @@map("goso_activity_images")
+}
+
+model ParentCategories {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  ChildCategories ChildCategories[]
+  @@map("parent_categories")
+}
+
+model ChildCategories {
+  id                   Int       @id @default(autoincrement())
+  name                 String
+  parent_categories_id Int
+  created_at           DateTime? @default(now())
+  updated_at           DateTime? @default(now())
+
+  ParentCategories ParentCategories? @relation(fields: [parent_categories_id], references: [id])
+
+
+  GosoCategories GosoCategories[]
+  @@index([parent_categories_id], name: "parent_categories_id")
+  @@map("child_categories")
+}
+
+model Review {
+  id          Int    @id @default(autoincrement())
+  writer_name String
+  grade       Int
+  comment     String
+  goso_id     Int
+
+  Goso Goso? @relation(fields: [goso_id], references: [id])
+
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  @@index([goso_id], name: "goso_id")
+  @@map("review")
+}
+
+// model Requests {
+//   id         Int       @id @default(autoincrement())
+//   user_id    Int
+//   tag_number String
+//   created_at DateTime? @default(now())
+//   updated_at DateTime? @default(now())
+
+//   Users Users? @relation(fields: [user_id], references: [id])
+
+//   @@index([user_id], name: "user_id")
+//   @@map("requests")
+// }

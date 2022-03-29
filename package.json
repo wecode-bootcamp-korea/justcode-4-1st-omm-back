@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "express": "^4.17.3"
+  },
+  "devDependencies": {
+    "@prisma/client": "^3.11.0",
+    "bcrypt": "^5.0.1",
+    "dotenv": "^16.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.15",
+    "prisma": "^3.11.1"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "name": "justcode-4-1st-omm-back",
+  "version": "1.0.0",
+  "main": "server.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
