@@ -1,5 +1,3 @@
-function userDao () {
+function UserDao() {}
 
-}
-
-module.exports = { userDao }
+module.exports = { UserDao };

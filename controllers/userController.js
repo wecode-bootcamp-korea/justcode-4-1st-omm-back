@@ -1,3 +1,3 @@
-function userController() {}
+function UserController() {}
 
-module.exports = { userController };
+module.exports = { UserController };
