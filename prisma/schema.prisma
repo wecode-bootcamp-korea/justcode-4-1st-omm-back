@@ -26,20 +26,24 @@ model Users {
 }
 
 model Masters {
-  id         Int       @id @default(autoincrement())
-  user_id    Int       @unique
-  intro      String
-  location   String
-  is_deleted Boolean   @default(false)
-  created_at DateTime? @default(now())
-  updated_at DateTime? @default(now())
-  deleted_at DateTime? @default(now())
+  id              Int       @id @default(autoincrement())
+  user_id         Int       @unique
+  intro           String
+  start_time      String
+  end_time        String
+  work_experience Int
+  employee_number Int
+  is_deleted      Boolean   @default(false)
+  created_at      DateTime? @default(now())
+  updated_at      DateTime? @default(now())
+  deleted_at      DateTime? @default(now())
 
   users Users @relation(fields: [user_id], references: [id])
 
   Reviews            Reviews[]
   MastersCategories  MastersCategories[]
   MastersRequestForm MastersRequestForm[]
+  MastersAdress      MastersAdress[]
   @@index([user_id], name: "user_id")
   @@map("masters")
 }
@@ -167,4 +171,47 @@ model MastersRequestForm {
   @@index([master_id], name: "master_id")
   @@index([request_form_id], name: "request_form_id")
   @@map("masters_request_form")
+}
+
+model Adress {
+  id         Int       @id @default(autoincrement())
+  name       String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  DetailAdress  DetailAdress[]
+  MastersAdress MastersAdress[]
+  @@map("adress")
+}
+
+model DetailAdress {
+  id         Int       @id @default(autoincrement())
+  adress_id  Int
+  name       String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  adress Adress @relation(fields: [adress_id], references: [id])
+
+  MastersAdress MastersAdress[]
+  @@index([adress_id], name: "adress_id")
+  @@map("detail_adress")
+}
+
+model MastersAdress {
+  id               Int       @id @default(autoincrement())
+  master_id        Int
+  adress_id        Int
+  detail_adress_id Int
+  created_at       DateTime? @default(now())
+  updated_at       DateTime? @default(now())
+
+  masters       Masters      @relation(fields: [master_id], references: [id])
+  adress        Adress       @relation(fields: [adress_id], references: [id])
+  detail_adress DetailAdress @relation(fields: [detail_adress_id], references: [id])
+
+  @@index([master_id], name: "master_id")
+  @@index([adress_id], name: "adress_id")
+  @@index([detail_adress_id], name: "detail_adress_id")
+  @@map("masters_adress")
 }
