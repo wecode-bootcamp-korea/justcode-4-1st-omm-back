@@ -110,6 +110,7 @@ model RequestForm {
   question_id        Int
   choice_question_id Int
   lesson_category_id Int
+  ended_at           DateTime?
   created_at         DateTime? @default(now())
   updated_at         DateTime? @default(now())
 
@@ -148,6 +149,7 @@ model MastersCategories {
   id              Int       @id @default(autoincrement())
   request_form_id Int
   master_id       Int
+  is_main         Boolean   @default(false)
   created_at      DateTime? @default(now())
   updated_at      DateTime? @default(now())
 
