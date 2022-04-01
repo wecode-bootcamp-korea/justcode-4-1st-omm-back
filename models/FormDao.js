@@ -8,6 +8,7 @@ const getQuestions = async (lessonId) => {
       q.id as id,
       q.description as description,
       q.question_number as questionNumber,
+      json_arrayagg(cq.id) as choiceId,
       json_arrayagg(cq.description) as choiceDescription
     from
       questions q
