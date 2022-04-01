@@ -7,15 +7,17 @@ const getCategory = async () => {
     select 
       tc.id as id,
       tc.name as name,
-      lc.id as lessonId,
-      lc.name as lessonName,
-      lc.image as lessonImage
+      json_arrayagg(lc.id) as lessonId,
+      json_arrayagg(lc.name) as lessonName,
+      json_arrayagg(lc.image) as lessonImage
     from 
       thema_categories tc
     join 
       lesson_categories lc
     on
-      tc.id = lc.thema_category_id;
+      tc.id = lc.thema_category_id
+    group by
+      tc.id
   `;
 };
 

@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
+
 const getAdress = async () => {
   return await prisma.$queryRaw`
     select
