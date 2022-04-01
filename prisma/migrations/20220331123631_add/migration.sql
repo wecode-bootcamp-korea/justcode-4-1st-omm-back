@@ -19,7 +19,10 @@ CREATE TABLE `masters` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
     `intro` VARCHAR(191) NOT NULL,
-    `location` VARCHAR(191) NOT NULL,
+    `start_time` VARCHAR(191) NOT NULL,
+    `end_time` VARCHAR(191) NOT NULL,
+    `work_experience` INTEGER NOT NULL,
+    `employee_number` INTEGER NOT NULL,
     `is_deleted` BOOLEAN NOT NULL DEFAULT false,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -135,6 +138,43 @@ CREATE TABLE `masters_request_form` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `adress` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `detail_adress` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `adress_id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `adress_id`(`adress_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `masters_adress` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `master_id` INTEGER NOT NULL,
+    `adress_id` INTEGER NOT NULL,
+    `detail_adress_id` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `master_id`(`master_id`),
+    INDEX `adress_id`(`adress_id`),
+    INDEX `detail_adress_id`(`detail_adress_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `masters` ADD CONSTRAINT `masters_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -176,3 +216,15 @@ ALTER TABLE `masters_request_form` ADD CONSTRAINT `masters_request_form_master_i
 
 -- AddForeignKey
 ALTER TABLE `masters_request_form` ADD CONSTRAINT `masters_request_form_request_form_id_fkey` FOREIGN KEY (`request_form_id`) REFERENCES `request_form`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `detail_adress` ADD CONSTRAINT `detail_adress_adress_id_fkey` FOREIGN KEY (`adress_id`) REFERENCES `adress`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `masters_adress` ADD CONSTRAINT `masters_adress_master_id_fkey` FOREIGN KEY (`master_id`) REFERENCES `masters`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `masters_adress` ADD CONSTRAINT `masters_adress_adress_id_fkey` FOREIGN KEY (`adress_id`) REFERENCES `adress`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `masters_adress` ADD CONSTRAINT `masters_adress_detail_adress_id_fkey` FOREIGN KEY (`detail_adress_id`) REFERENCES `detail_adress`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

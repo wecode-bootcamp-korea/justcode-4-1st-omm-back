@@ -1,3 +1,9 @@
-function UserDao() {}
+const { prismaClient } = require("@prisma/client");
+const prisma = new prismaClient();
 
-module.exports = { UserDao };
+const signup = async () => {
+  try {
+  } catch (err) {}
+};
+
+module.exports = { signup };
