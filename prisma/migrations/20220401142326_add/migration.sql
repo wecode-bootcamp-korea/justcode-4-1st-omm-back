@@ -18,19 +18,11 @@ CREATE TABLE `users` (
 CREATE TABLE `masters` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
-<<<<<<<< HEAD:prisma/migrations/20220331123631_add/migration.sql
-    `intro` VARCHAR(191) NOT NULL,
-    `start_time` VARCHAR(191) NOT NULL,
-    `end_time` VARCHAR(191) NOT NULL,
-    `work_experience` INTEGER NOT NULL,
-    `employee_number` INTEGER NOT NULL,
-========
     `intro` VARCHAR(191) NULL,
     `start_time` VARCHAR(191) NULL,
     `end_time` VARCHAR(191) NULL,
     `work_experience` INTEGER NULL,
     `employee_number` INTEGER NULL,
->>>>>>>> e1037bb45a2146c3f9a3bb58bf33e475be59fa9f:prisma/migrations/20220331113440_soongo_init_tables/migration.sql
     `is_deleted` BOOLEAN NOT NULL DEFAULT false,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
