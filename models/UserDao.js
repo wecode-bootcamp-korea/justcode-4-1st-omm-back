@@ -3,7 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const createUser = async (inputName, inputEmail, inputPW, inputPhone) => {
+const createUserDirectMaster = async (inputName, inputEmail, inputPW, inputPhone) => {
     try {
         const user = await prisma.users.create({
             data: {
@@ -20,4 +20,4 @@ const createUser = async (inputName, inputEmail, inputPW, inputPhone) => {
     }
 }
 
-module.exports = { createUser };
+module.exports = { createUserDirectMaster };

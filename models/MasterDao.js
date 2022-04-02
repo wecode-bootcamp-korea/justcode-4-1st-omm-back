@@ -14,7 +14,6 @@ const sendLessonCat = async (category) => {
         `
         return lessonCat
     } catch (error) {
-        console.log(error)
         throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" })
     }
 }
@@ -28,9 +27,7 @@ const createMaster = async (userID) => {
           });
         return master;
     } catch (error) {
-        console.log(error);
-        // throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
-        throw error;
+        throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
     }
 }
 
@@ -45,9 +42,7 @@ const insertMasterCat = async (masterID, lessonCatID) => {
         })
 
     } catch (error) {
-        console.log(error)
-        // throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
-        throw error;
+        throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
     }
 }
 
@@ -65,9 +60,7 @@ const findMasterAddress = async (adress, detailAdress) => {
 
         return { adressID, detailAdressID }
     } catch (error) {
-        console.log(error)
-        // throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
-        throw error;
+        throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
     }
 }
 
@@ -79,9 +72,7 @@ const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
             (${masterID}, ${adressID}, ${detailAdressID});
         `
     } catch (error) {
-        console.log(error)
-        // throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
-        throw error;
+        throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
     }
 }
 
