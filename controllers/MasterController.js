@@ -16,7 +16,7 @@ const signUp = async (req, res, next) => {
     try {
         const { name, email, password, phoneNumber, userID, lessonCatID, adress, detailAdress } = req.body;
 
-        if ( !name || !email || !password || !phoneNumber || !lessonCatID || !adress || !detailAdress) {
+        if ( !name || typeof name !== "string" || !email || typeof email !== "string" || !password || typeof password !== "string" || !phoneNumber || !lessonCatID  || typeof lessonCatID !== "object"|| !adress || !detailAdress) {
         throw await errorGenerator({ statusCode:400, message:"KEY_ERROR" });
         }
 

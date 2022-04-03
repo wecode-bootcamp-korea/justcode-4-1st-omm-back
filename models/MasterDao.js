@@ -40,6 +40,7 @@ const insertMasterCat = async (masterID, lessonCatID) => {
             (${masterID}, ${catID}, false);
         `
         })
+        return 1;
 
     } catch (error) {
         throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
@@ -60,7 +61,7 @@ const findMasterAddress = async (adress, detailAdress) => {
 
         return { adressID, detailAdressID }
     } catch (error) {
-        throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
+        throw await errorGenerator({ statusCode:500, message:"WRONG_ADDRESS" })
     }
 }
 
@@ -71,6 +72,7 @@ const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
             VALUES
             (${masterID}, ${adressID}, ${detailAdressID});
         `
+        return 1;
     } catch (error) {
         throw await errorGenerator({ statusCode:500, message:"SERVER_ERROR" })
     }
