@@ -12,8 +12,8 @@ model Users {
   name         String
   email        String
   password     String
-  user_image   String
-  phone_number String
+  user_image   String?
+  phone_number String?
   is_deleted   Boolean   @default(false)
   created_at   DateTime? @default(now())
   updated_at   DateTime? @default(now())
@@ -28,11 +28,11 @@ model Users {
 model Masters {
   id              Int       @id @default(autoincrement())
   user_id         Int       @unique
-  intro           String
-  start_time      String
-  end_time        String
-  work_experience Int
-  employee_number Int
+  intro           String?
+  start_time      String?
+  end_time        String?
+  work_experience Int?
+  employee_number Int?
   is_deleted      Boolean   @default(false)
   created_at      DateTime? @default(now())
   updated_at      DateTime? @default(now())
@@ -48,28 +48,30 @@ model Masters {
   @@map("masters")
 }
 
-model ThemeCategories {
+model ThemaCategories {
   id         Int       @id @default(autoincrement())
   name       String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   LessonCategories LessonCategories[]
-  @@map("theme_categories")
+  @@map("thema_categories")
 }
 
 model LessonCategories {
   id                Int       @id @default(autoincrement())
-  theme_category_id Int
+  thema_category_id Int
   name              String
+  image             String?
   created_at        DateTime? @default(now())
   updated_at        DateTime? @default(now())
 
-  theme_categories ThemeCategories @relation(fields: [theme_category_id], references: [id])
-
+  thema_categories ThemaCategories @relation(fields: [thema_category_id], references: [id])
+  
+  MastersCategories  MastersCategories[]
   Questions   Questions[]
   RequestForm RequestForm[]
-  @@index([theme_category_id], name: "theme_category_id")
+  @@index([thema_category_id], name: "thema_category_id")
   @@map("lesson_categories")
 }
 
@@ -117,7 +119,6 @@ model RequestForm {
   choice_questions  ChoiceQuestions  @relation(fields: [choice_question_id], references: [id])
   lesson_categories LessonCategories @relation(fields: [lesson_category_id], references: [id])
 
-  MastersCategories  MastersCategories[]
   MastersRequestForm MastersRequestForm[]
   @@index([user_id], name: "user_id")
   @@index([question_id], name: "question_id")
@@ -145,16 +146,17 @@ model Reviews {
 
 model MastersCategories {
   id              Int       @id @default(autoincrement())
-  request_form_id Int
+  lesson_category_id Int
   master_id       Int
+  is_main         Boolean
   created_at      DateTime? @default(now())
   updated_at      DateTime? @default(now())
 
   masters      Masters     @relation(fields: [master_id], references: [id])
-  request_form RequestForm @relation(fields: [request_form_id], references: [id])
+  lessonCategories LessonCategories @relation(fields: [lesson_category_id], references: [id])
 
   @@index([master_id], name: "master_id")
-  @@index([request_form_id], name: "request_form_id")
+  @@index([lesson_category_id], name: "lesson_category_id")
   @@map("masters_categories")
 }
 
