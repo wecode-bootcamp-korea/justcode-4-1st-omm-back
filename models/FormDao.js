@@ -11,7 +11,7 @@ const getQuestionsByLessonId = async (lessonId) => {
       id: true,
       description: true,
       question_number: true,
-      ChoiceQuestions: {
+      choices: {
         select: {
           id: true,
           description: true,

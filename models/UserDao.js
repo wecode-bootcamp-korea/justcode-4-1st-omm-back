@@ -7,7 +7,7 @@ const getAdress = async () => {
     select: {
       id: true,
       name: true,
-      DetailAdress: {
+      details: {
         select: {
           id: true,
           name: true,
