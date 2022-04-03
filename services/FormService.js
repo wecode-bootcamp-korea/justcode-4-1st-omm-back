@@ -1,8 +1,8 @@
 const FormDao = require("../models/FormDao");
 const errorGenerator = require("../utils/errorGenerator");
 
-const getQuestions = async (lessonId) => {
-  return await FormDao.getQuestions(lessonId);
+const getQuestionsByLessonId = async (lessonId) => {
+  return await FormDao.getQuestionsByLessonId(lessonId);
 };
 
-module.exports = { getQuestions };
+module.exports = { getQuestionsByLessonId };
