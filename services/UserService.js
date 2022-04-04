@@ -1,10 +1,14 @@
-const userDao = require("../models/UserDao");
+const UserDao = require("../models/UserDao");
+const errorGenerator = require("../utils/errorGenerator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const errorGenerator = require("../utils/errorGenerator");
+
+const getAddress = async () => {
+  return await UserDao.getAddress();
+};
 
 const sendLogIn = async (email, password) => {
-  const userDB = await userDao.sendLogIn(email);
+  const userDB = await UserDao.sendLogIn(email);
 
   if (userDB === []) {
     throw errorGenerator({
@@ -27,4 +31,4 @@ const sendLogIn = async (email, password) => {
   return token;
 };
 
-module.exports = { sendLogIn };
+module.exports = { getAddress, sendLogIn };

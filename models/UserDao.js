@@ -1,7 +1,21 @@
 const errorGenerator = require("../utils/errorGenerator");
 const { PrismaClient } = require("@prisma/client");
-
 const prisma = new PrismaClient();
+
+const getAddress = async () => {
+  return await prisma.address.findMany({
+    select: {
+      id: true,
+      name: true,
+      details: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+};
 
 const createUserDirectMaster = async (
   inputName,
@@ -38,4 +52,4 @@ const sendLogIn = async (email) => {
   });
 };
 
-module.exports = { createUserDirectMaster, sendLogIn };
+module.exports = { getAddress, createUserDirectMaster, sendLogIn };
