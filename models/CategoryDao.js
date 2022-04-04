@@ -3,20 +3,19 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getCategory = async () => {
-  return await prisma.$queryRaw`
-      select 
-	      tc.id,
-	      tc.name as name,
-        lc.id as lessonId,
-        lc.name as lessonName,
-        lc.image as lessonImage
-      from 
-	      thema_categories tc
-      join 
-	      lesson_categories lc
-      on
-	      tc.id = lc.thema_category_id;
-      `;
+  return await prisma.themaCategories.findMany({
+    select: {
+      id: true,
+      name: true,
+      lessons: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+      },
+    },
+  });
 };
 
 module.exports = { getCategory };

@@ -1,5 +1,6 @@
 const UserDao = require("../models/UserDao");
 const bcrypt = require("bcrypt");
+const errorGenerator = require("../utils/errorGenerator");
 
 const signup = async (name, email, password) => {
   try {
@@ -39,4 +40,8 @@ const signup = async (name, email, password) => {
   }
 };
 
-module.exports = { signup };
+const getAddress = async () => {
+  return await UserDao.getAddress();
+};
+
+module.exports = { getAddress, signup };
