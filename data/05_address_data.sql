@@ -1,5 +1,5 @@
 insert into
-  adress (name)
+  address (name)
 values
   ("서울"),
   ("인천"),

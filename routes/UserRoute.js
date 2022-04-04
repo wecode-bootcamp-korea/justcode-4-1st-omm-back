@@ -5,6 +5,6 @@ const { ValidateLogin } = require("../middleware/ValidateLogin");
 
 // GET
 router.get("/address", UserController.getAddress);
-router.post("/login", ValidateLogin, userController.sendLogIn);
+router.post("/login", ValidateLogin, UserController.sendLogIn);
 
 module.exports = router;

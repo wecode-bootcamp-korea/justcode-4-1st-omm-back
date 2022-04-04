@@ -64,8 +64,8 @@ const sendMasterDetail = async (req, res) => {
     console.log("controller", id);
 
     const masterDetail = await masterService.sendMasterDetail(id);
-    const masterReview = await masterService.sendMasterReview(id);
-    return res.status(200).json({ detail: masterDetail, review: masterReview });
+    // const masterReview = await masterService.sendMasterReview(id);
+    return res.status(200).json(masterDetail);
   } catch (error) {
     return res.status(error.statusCode || 500).json({ message: error.message });
   }

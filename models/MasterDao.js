@@ -77,29 +77,30 @@ const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
 
 const sendMasterDetail = async (id) => {
   console.log("model 1 ", id);
-  const masterDetail = await prisma.masters.findUnique({
-    where: {
-      id: Number(id),
-    },
-    // select: {
-    //   intro: true,
-    //   start_time: true,
-    //   end_time: true,
-    //   work_experience: true,
-    //   employee_number: true,
-    //   //   reviews: {
-    //   //     select: {
-    //   //       comment: true,
-    //   //     },
-    //   //   },
-    // },
-    //     include: {
-    //       reviews: true,
-    //     },
-  });
-  console.log("model 2 ", id);
+  const masterDetail = await prisma.$queryRaw`
+  select name, intro, start_time, end_time, work_experience, employee_number, address.name as address, detail_address.name as detail_address
+  from masters
+  join masters_address
+  join address
+  join detail_address
+  on masters.id = masters_address.master_id
+  on masters_address.address_id = address.id
+  on masters_address.detail_address_id = detail_address.id
+  where masters.id=${id}
+  `;
+
   return masterDetail;
 };
+
+// select intro, start_time, end_time, work_experience, employee_number, address.name, detail_address.name
+// from masters
+// join masters_address
+// join address
+// join detail_address
+// on id = masters_address.master_id
+// on masters_address.address_id = address.id
+// on masters_address.detail_address_id = detail_address.id
+// where masters.id=${id}
 
 module.exports = {
   sendLessonCat,
