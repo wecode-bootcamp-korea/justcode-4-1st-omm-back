@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "vim": "^0.1.0"
   },
   "devDependencies": {
     "@prisma/client": "^3.11.0",
