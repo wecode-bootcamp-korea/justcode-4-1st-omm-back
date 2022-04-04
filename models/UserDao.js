@@ -2,8 +2,8 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const getAdress = async () => {
-  return await prisma.adress.findMany({
+const getAddress = async () => {
+  return await prisma.address.findMany({
     select: {
       id: true,
       name: true,
@@ -17,4 +17,4 @@ const getAdress = async () => {
   });
 };
 
-module.exports = { getAdress };
+module.exports = { getAddress };

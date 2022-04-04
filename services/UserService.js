@@ -1,8 +1,8 @@
 const UserDao = require("../models/UserDao");
 const errorGenerator = require("../utils/errorGenerator");
 
-const getAdress = async () => {
-  return await UserDao.getAdress();
+const getAddress = async () => {
+  return await UserDao.getAddress();
 };
 
-module.exports = { getAdress };
+module.exports = { getAddress };
