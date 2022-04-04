@@ -34,7 +34,6 @@ const sendLogIn = async (email, password) => {
 
 const signup = async (name, email, password) => {
   try {
-    //정해진 형식 따라가는지 확인
     const emailReg =
       /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
     const pwReg = /(?=.*\d)(?=.*[a-zA-ZS]).{8,}/;
@@ -50,7 +49,6 @@ const signup = async (name, email, password) => {
       throw error;
     }
 
-    //중복 회원가입 확인
     const user = await UserDao.getUserByEmail(email);
 
     if (user.length !== 0) {
@@ -59,7 +57,6 @@ const signup = async (name, email, password) => {
       throw error;
     }
 
-    //비밀번호 암호화
     const encryptedPW = bcrypt.hashSync(password, bcrypt.genSaltSync());
 
     const newUser = await UserDao.createUser(name, email, encryptedPW);
