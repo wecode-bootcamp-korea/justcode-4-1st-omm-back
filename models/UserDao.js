@@ -1,9 +1,17 @@
-const { prismaClient } = require("@prisma/client");
-const prisma = new prismaClient();
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
-const signup = async () => {
-  try {
-  } catch (err) {}
+const getUserByEmail = async (email) => {
+  return await prisma.$queryRaw`
+       select (id,password) from users where email=${email}}`;
 };
-
-module.exports = { signup };
+const createUser = async (name, email, encryptedPW) => {
+  return await prisma.users.create({
+    data: {
+      name: name,
+      email: email,
+      password: encryptedPW,
+    },
+  });
+};
+module.exports = { getUserByEmail, createUser };
