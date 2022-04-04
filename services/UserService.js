@@ -1,7 +1,6 @@
 const UserDao = require("../models/UserDao");
 const bcrypt = require("bcrypt");
 const errorGenerator = require("../utils/errorGenerator");
-const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const getAddress = async () => {
