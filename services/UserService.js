@@ -10,7 +10,7 @@ const getAddress = async () => {
 const sendLogIn = async (email, password) => {
   const userDB = await UserDao.sendLogIn(email);
 
-  if (userDB === []) {
+  if (userDB.length === 0) {
     throw errorGenerator({
       statusCode: 404,
       message: "존재하지 않는 사용자입니다.",
