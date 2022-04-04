@@ -68,8 +68,9 @@ model LessonCategories {
 
   thema_categories ThemaCategories @relation(fields: [thema_category_id], references: [id])
 
-  questions   Questions[]
-  requestForm RequestForm[]
+  questions         Questions[]
+  requestForm       RequestForm[]
+  MastersCategories MastersCategories[]
   @@index([thema_category_id], name: "thema_category_id")
   @@map("lesson_categories")
 }
@@ -121,7 +122,6 @@ model RequestForm {
   choice_questions  ChoiceQuestions  @relation(fields: [choice_question_id], references: [id])
   lesson_categories LessonCategories @relation(fields: [lesson_category_id], references: [id])
 
-  mastersCategories  MastersCategories[]
   mastersRequestForm MastersRequestForm[]
   @@index([user_id], name: "user_id")
   @@index([question_id], name: "question_id")
@@ -148,18 +148,18 @@ model Reviews {
 }
 
 model MastersCategories {
-  id              Int       @id @default(autoincrement())
-  request_form_id Int
-  master_id       Int
-  is_main         Boolean   @default(false)
-  created_at      DateTime? @default(now())
-  updated_at      DateTime? @default(now())
+  id                 Int       @id @default(autoincrement())
+  lesson_category_id Int
+  master_id          Int
+  is_main            Boolean   @default(false)
+  created_at         DateTime? @default(now())
+  updated_at         DateTime? @default(now())
 
-  masters      Masters     @relation(fields: [master_id], references: [id])
-  request_form RequestForm @relation(fields: [request_form_id], references: [id])
+  masters Masters          @relation(fields: [master_id], references: [id])
+  lessons LessonCategories @relation(fields: [lesson_category_id], references: [id])
 
   @@index([master_id], name: "master_id")
-  @@index([request_form_id], name: "request_form_id")
+  @@index([lesson_category_id], name: "lesson_category_id")
   @@map("masters_categories")
 }
 
