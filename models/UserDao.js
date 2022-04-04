@@ -1,3 +1,20 @@
-function UserDao() {}
+const { PrismaClient } = require("@prisma/client");
 
-module.exports = { UserDao };
+const prisma = new PrismaClient();
+
+const getAddress = async () => {
+  return await prisma.address.findMany({
+    select: {
+      id: true,
+      name: true,
+      details: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+    },
+  });
+};
+
+module.exports = { getAddress };
