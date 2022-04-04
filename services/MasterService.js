@@ -114,8 +114,9 @@ const signUp = async (
 };
 
 const sendMasterDetail = async (id) => {
+  console.log("service 1 ", id);
   const masterDetail = await masterDao.sendMasterDetail(id);
-
+  console.log("service 2", id);
   if (masterDetail.length === 0) {
     throw await errorGenerator({
       statusCode: 404,

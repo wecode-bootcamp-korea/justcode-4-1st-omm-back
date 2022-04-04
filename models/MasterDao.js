@@ -76,30 +76,28 @@ const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
 };
 
 const sendMasterDetail = async (id) => {
+  console.log("model 1 ", id);
   const masterDetail = await prisma.masters.findUnique({
     where: {
-      id: id,
+      id: Number(id),
     },
-    select: {
-      intro: true,
-      start_time: true,
-      end_time: true,
-      work_experience: true,
-      employee_number: true,
-    },
-    include: {
-      reviews: {
-        user_id: true,
-        grade: true,
-        comment: true,
-      },
-      master_adress: {
-        adressID: true,
-        detailAdressID: true,
-      },
-    },
+    // select: {
+    //   intro: true,
+    //   start_time: true,
+    //   end_time: true,
+    //   work_experience: true,
+    //   employee_number: true,
+    //   //   reviews: {
+    //   //     select: {
+    //   //       comment: true,
+    //   //     },
+    //   //   },
+    // },
+    //     include: {
+    //       reviews: true,
+    //     },
   });
-
+  console.log("model 2 ", id);
   return masterDetail;
 };
 
