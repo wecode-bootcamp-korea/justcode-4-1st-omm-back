@@ -26,3 +26,5 @@ const sendLogIn = async (email, password) => {
 
   return token;
 };
+
+module.exports = { sendLogIn };
