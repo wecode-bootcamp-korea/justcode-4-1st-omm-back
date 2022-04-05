@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   id           Int       @id @default(autoincrement())
-  name         String
+  name         String    @unique 
   email        String
   password     String
   user_image   String?
@@ -27,6 +27,7 @@ model Users {
 
 model Masters {
   id              Int       @id @default(autoincrement())
+  name            String    
   user_id         Int       @unique
   intro           String?
   start_time      String?
@@ -44,7 +45,7 @@ model Masters {
   mastersCategories  MastersCategories[]
   mastersRequestForm MastersRequestForm[]
   mastersAddress     MastersAddress[]
-  masterProfileImages MasterProfileImage[]
+  masterProfileImage    MasterProfileImage[]
   @@index([user_id], name: "user_id")
   @@map("masters")
 }
@@ -122,7 +123,6 @@ model RequestForm {
   questions         Questions        @relation(fields: [question_id], references: [id])
   choice_questions  ChoiceQuestions  @relation(fields: [choice_question_id], references: [id])
   lesson_categories LessonCategories @relation(fields: [lesson_category_id], references: [id])
- 
 
   mastersRequestForm MastersRequestForm[]
   @@index([user_id], name: "user_id")
@@ -143,6 +143,7 @@ model Reviews {
 
   masters Masters @relation(fields: [master_id], references: [id])
   users   Users   @relation(fields: [user_id], references: [id])
+
   reviewImages ReviewImage[]
 
   @@index([master_id], name: "master_id")
