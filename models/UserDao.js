@@ -1,7 +1,7 @@
-const errorGenerator = require("../utils/errorGenerator");
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+const errorGenerator = require("../utils/errorGenerator");
 
 const findUserInfo = async (inputEmail, inputPhone) => {
     try {
@@ -51,7 +51,6 @@ const createUserDirectMaster = async (
     });
     return user;
   } catch (error) {
-    console.log(error);
     throw await errorGenerator({ statusCode: 500, message: error.message });
   }
 };
@@ -69,4 +68,23 @@ const sendLogIn = async (email) => {
   });
 };
 
-module.exports = { getAddress, createUserDirectMaster, sendLogIn, findUserInfo, createUserDirectMaster };
+const getUserByEmail = async (email) => {
+  return await prisma.$queryRaw`
+         select (id,password) from users where email=${email}}`;
+};
+const createUser = async (name, email, encryptedPW) => {
+  return await prisma.users.create({
+    data: {
+      name: name,
+      email: email,
+      password: encryptedPW,
+    },
+  });
+};
+
+module.exports = {
+  createUserDirectMaster,
+  sendLogIn,
+  getUserByEmail,
+  createUser,
+};

@@ -5,4 +5,12 @@ const getCategory = async () => {
   return await CategoryDao.getCategory();
 };
 
-module.exports = { getCategory };
+const sendLessonCat = async (id) => {
+  try {
+    return await masterDao.sendLessonCat(id);
+  } catch (error) {
+    throw await error;
+  }
+};
+
+module.exports = { getCategory, sendLessonCat };

@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   id           Int       @id @default(autoincrement())
-  name         String
+  name         String    @unique
   email        String
   password     String
   user_image   String?
@@ -28,6 +28,7 @@ model Users {
 model Masters {
   id              Int       @id @default(autoincrement())
   user_id         Int       @unique
+  name            String
   intro           String?
   start_time      String?
   end_time        String?
