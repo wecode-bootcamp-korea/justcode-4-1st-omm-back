@@ -62,13 +62,9 @@ const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
 
 const sendMasterDetail = async (id) => {
   const masterDetail = await prisma.$queryRaw`
-  select m.id, m.name, m.intro, m.start_time, m.end_time, m.work_experience, m.employee_number, 
-  a.name as address, d.name as detail_address
-  from masters m, address a, detail_address d, masters_address ma
-  where m.id = ma.master_id
-  and ma.address_id = a.id
-  and ma.detail_address_id = d.id
-  and m.id=${id}
+  select id, intro, start_time, end_time, work_experience, employee_number
+  from masters
+  and id=${id}
   `;
 
   return masterDetail;
