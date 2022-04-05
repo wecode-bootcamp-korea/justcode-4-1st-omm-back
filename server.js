@@ -5,8 +5,10 @@ const { PrismaClient } = require("@prisma/client");
 
 const app = express();
 const prisma = new PrismaClient();
+const cors = require("CORS");
 
 app.use(express.json());
+app.use(cors());
 app.use(routes);
 
 const server = createServer(app);
