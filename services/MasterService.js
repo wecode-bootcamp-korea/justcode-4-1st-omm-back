@@ -4,6 +4,8 @@ const errorGenerator = require("../utils/errorGenerator");
 
 const masterDao = require("../models/MasterDao");
 const userDao = require("../models/UserDao");
+const categoryDao = require("../models/CategoryDao");
+const addressDao = require("../models/AddressDao");
 
 const signUp = async (
   name,
@@ -86,7 +88,13 @@ const sendMasterDetail = async (id) => {
     });
   }
 
-  return masterDetail[0];
+  const masterDetailAddress = await addressDao.sendMasterAddress(id);
+  const masterDetailCategory = await categoryDao.sendMasterCategory(id);
+  const masterDetailAll = masterDetail[0];
+  masterDetailAll.lesson_categories = masterDetailCategory[0].lesson_categories;
+  masterDetailAll.address = masterDetailAddress[0].address;
+  masterDetailAll.detail_address = masterDetailAddress[0].detail_address;
+  return masterDetailAll;
 };
 
 module.exports = { signUp, sendMasterDetail };
