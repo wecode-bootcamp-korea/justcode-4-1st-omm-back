@@ -34,7 +34,6 @@ const createUserDirectMaster = async (
     });
     return user;
   } catch (error) {
-    console.log(error);
     throw await errorGenerator({ statusCode: 500, message: error.message });
   }
 };

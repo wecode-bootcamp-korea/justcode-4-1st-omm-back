@@ -1,7 +1,7 @@
 const FormService = require("../services/FormService");
 const errorGenerator = require("../utils/errorGenerator");
 
-const getQuestionsByLessonId = async (req, res, next) => {
+const getQuestions = async (req, res, next) => {
   try {
     const { lessonId } = req.body;
     if (!lessonId) {
@@ -15,4 +15,4 @@ const getQuestionsByLessonId = async (req, res, next) => {
   }
 };
 
-module.exports = { getQuestionsByLessonId };
+module.exports = { getQuestions };

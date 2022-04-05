@@ -3,8 +3,6 @@ const router = express.Router();
 
 const masterController = require("../controllers/MasterController");
 
-router.get("/:category", masterController.sendCategories);
-
-router.post("/welcome/:category", masterController.signUp);
+router.post("/signup", masterController.signUp);
 
 module.exports = router;
