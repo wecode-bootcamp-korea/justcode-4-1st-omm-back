@@ -8,7 +8,7 @@ const signUp = async (req, res, next) => {
 
         const { name, email, password, phoneNumber, lessonCatID, address, detailAddress } = req.body;
 
-        if ( Authorization === "undefined" ) {
+        if ( typeof Authorization === "undefined" ) {
             if( !name || typeof name !== "string" || !email || typeof email !== "string" 
             || !password || typeof password !== "string" || !phoneNumber || !lessonCatID  
             || typeof lessonCatID !== "object"|| !address || !detailAddress) {
