@@ -61,10 +61,7 @@ const signUp = async (req, res, next) => {
 const sendMasterDetail = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("controller", id);
-
     const masterDetail = await masterService.sendMasterDetail(id);
-    // const masterReview = await masterService.sendMasterReview(id);
     return res.status(200).json(masterDetail);
   } catch (error) {
     return res.status(error.statusCode || 500).json({ message: error.message });

@@ -76,31 +76,18 @@ const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
 };
 
 const sendMasterDetail = async (id) => {
-  console.log("model 1 ", id);
   const masterDetail = await prisma.$queryRaw`
-  select name, intro, start_time, end_time, work_experience, employee_number, address.name as address, detail_address.name as detail_address
-  from masters
-  join masters_address
-  join address
-  join detail_address
-  on masters.id = masters_address.master_id
-  on masters_address.address_id = address.id
-  on masters_address.detail_address_id = detail_address.id
-  where masters.id=${id}
+  select m.id, m.intro, m.start_time, m.end_time, m.work_experience, m.employee_number, 
+  a.name as address, d.name as detail_address
+  from masters m, address a, detail_address d, masters_address ma
+  where m.id = ma.master_id
+  and ma.address_id = a.id
+  and ma.detail_address_id = d.id
+  and m.id=${id}
   `;
 
   return masterDetail;
 };
-
-// select intro, start_time, end_time, work_experience, employee_number, address.name, detail_address.name
-// from masters
-// join masters_address
-// join address
-// join detail_address
-// on id = masters_address.master_id
-// on masters_address.address_id = address.id
-// on masters_address.detail_address_id = detail_address.id
-// where masters.id=${id}
 
 module.exports = {
   sendLessonCat,
