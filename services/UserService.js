@@ -3,10 +3,6 @@ const bcrypt = require("bcrypt");
 const errorGenerator = require("../utils/errorGenerator");
 const jwt = require("jsonwebtoken");
 
-const getAddress = async () => {
-  return await UserDao.getAddress();
-};
-
 const sendLogIn = async (email, password) => {
   const userDB = await UserDao.sendLogIn(email);
 
@@ -66,4 +62,4 @@ const signup = async (name, email, password) => {
   }
 };
 
-module.exports = { getAddress, sendLogIn, signup };
+module.exports = { sendLogIn, signup };

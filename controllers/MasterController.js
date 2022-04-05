@@ -1,17 +1,6 @@
 const masterService = require("../services/MasterService");
 const errorGenerator = require("../utils/errorGenerator");
 
-const sendCategories = async (req, res, next) => {
-  try {
-    const category = req.params.category;
-
-    const lessonCat = await masterService.sendLessonCat(category);
-    return res.status(200).json(lessonCat);
-  } catch (error) {
-    return res.status(500).json({ message: "SERVER_ERROR" });
-  }
-};
-
 const signUp = async (req, res, next) => {
   try {
     const {
@@ -68,4 +57,4 @@ const sendMasterDetail = async (req, res) => {
   }
 };
 
-module.exports = { sendCategories, signUp, sendMasterDetail };
+module.exports = { signUp, sendMasterDetail };

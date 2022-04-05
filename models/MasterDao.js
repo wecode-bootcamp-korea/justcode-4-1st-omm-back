@@ -3,21 +3,6 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const sendLessonCat = async (category) => {
-  try {
-    const lessonCat = await prisma.$queryRaw`
-        SELECT lc.id, lc.name 
-        FROM lesson_categories lc
-        JOIN thema_categories tc
-        ON lc.thema_category_id = tc.id
-        WHERE tc.name = ${category};
-        `;
-    return lessonCat;
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
-  }
-};
-
 const createMaster = async (userID) => {
   try {
     const master = await prisma.masters.create({
@@ -77,7 +62,7 @@ const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
 
 const sendMasterDetail = async (id) => {
   const masterDetail = await prisma.$queryRaw`
-  select m.id, m.intro, m.start_time, m.end_time, m.work_experience, m.employee_number, 
+  select m.id, m.name, m.intro, m.start_time, m.end_time, m.work_experience, m.employee_number, 
   a.name as address, d.name as detail_address
   from masters m, address a, detail_address d, masters_address ma
   where m.id = ma.master_id
@@ -90,7 +75,6 @@ const sendMasterDetail = async (id) => {
 };
 
 module.exports = {
-  sendLessonCat,
   createMaster,
   insertMasterCat,
   findMasterAddress,

@@ -9,7 +9,7 @@ datasource db {
 
 model Users {
   id           Int       @id @default(autoincrement())
-  name         String    @unique 
+  name         String    @unique
   email        String
   password     String
   user_image   String?
@@ -27,8 +27,8 @@ model Users {
 
 model Masters {
   id              Int       @id @default(autoincrement())
-  name            String    
   user_id         Int       @unique
+  name            String
   intro           String?
   start_time      String?
   end_time        String?
@@ -45,7 +45,7 @@ model Masters {
   mastersCategories  MastersCategories[]
   mastersRequestForm MastersRequestForm[]
   mastersAddress     MastersAddress[]
-  masterProfileImage    MasterProfileImage[]
+  masterProfileImages MasterProfileImage[]
   @@index([user_id], name: "user_id")
   @@map("masters")
 }
