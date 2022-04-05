@@ -1,6 +1,6 @@
 const UserDao = require("../models/UserDao");
-const errorGenerator = require("../utils/errorGenerator");
 const bcrypt = require("bcrypt");
+const errorGenerator = require("../utils/errorGenerator");
 const jwt = require("jsonwebtoken");
 
 const getAddress = async () => {
@@ -31,4 +31,39 @@ const sendLogIn = async (email, password) => {
   return token;
 };
 
-module.exports = { getAddress, sendLogIn };
+const signup = async (name, email, password) => {
+  try {
+    const emailReg =
+      /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+    const pwReg = /(?=.*\d)(?=.*[a-zA-ZS]).{8,}/;
+
+    if (!name || !emailReg.test(email) || !pwReg.test(email)) {
+      const error = new Error("Signup_Fail");
+      error.statusCode = 400;
+      throw error;
+    }
+    if (password.length < 8) {
+      const error = new Error("PASSWORD_TOO_SHORT");
+      error.statusCode = 400;
+      throw error;
+    }
+
+    const user = await UserDao.getUserByEmail(email);
+
+    if (user.length !== 0) {
+      const error = new Error("EXISTING_USER");
+      error.statusCode = 409;
+      throw error;
+    }
+
+    const encryptedPW = bcrypt.hashSync(password, bcrypt.genSaltSync());
+
+    const newUser = await UserDao.createUser(name, email, encryptedPW);
+
+    return newUser;
+  } catch (err) {
+    return res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
+module.exports = { getAddress, sendLogIn, signup };

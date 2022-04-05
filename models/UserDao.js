@@ -52,4 +52,24 @@ const sendLogIn = async (email) => {
   });
 };
 
-module.exports = { getAddress, createUserDirectMaster, sendLogIn };
+const getUserByEmail = async (email) => {
+  return await prisma.$queryRaw`
+         select (id,password) from users where email=${email}}`;
+};
+const createUser = async (name, email, encryptedPW) => {
+  return await prisma.users.create({
+    data: {
+      name: name,
+      email: email,
+      password: encryptedPW,
+    },
+  });
+};
+
+module.exports = {
+  getAddress,
+  createUserDirectMaster,
+  sendLogIn,
+  getUserByEmail,
+  createUser,
+};
