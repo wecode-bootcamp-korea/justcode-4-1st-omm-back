@@ -11,6 +11,7 @@ CREATE TABLE `users` (
     `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `deleted_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
+    UNIQUE INDEX `users_name_key`(`name`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -18,6 +19,7 @@ CREATE TABLE `users` (
 CREATE TABLE `masters` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `user_id` INTEGER NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `intro` VARCHAR(191) NULL,
     `start_time` VARCHAR(191) NULL,
     `end_time` VARCHAR(191) NULL,

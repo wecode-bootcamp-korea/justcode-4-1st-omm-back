@@ -5,46 +5,11 @@ const errorGenerator = require("../utils/errorGenerator");
 const masterDao = require("../models/MasterDao");
 const userDao = require("../models/UserDao");
 
-const sendMasterInfo = async () => {
+const sendMasters = async () => {
   try {
-    const search = await masterDao.getMasterInfo();
+    return await masterDao.getMasters();
   } catch (err) {
     return res.status(500).json({ message: "SERVER_ERROR" });
-  }
-};
-const sendLessonCat = async (category) => {
-  try {
-    let categoryKo;
-    switch (category) {
-      case "lesson":
-        categoryKo = "레슨";
-        break;
-      case "home":
-        categoryKo = "홈/리빙";
-        break;
-      case "event":
-        categoryKo = "이벤트";
-        break;
-      case "business":
-        categoryKo = "비즈니스";
-        break;
-      case "design_develop":
-        categoryKo = "디자인/개발";
-        break;
-      case "health":
-        categoryKo = "건강/미용";
-        break;
-      case "part_time":
-        categoryKo = "알바";
-        break;
-      case "etc":
-        categoryKo = "기타";
-        break;
-    }
-    const lessonCat = await masterDao.sendLessonCat(categoryKo);
-    return lessonCat;
-  } catch (error) {
-    throw await error;
   }
 };
 
@@ -120,4 +85,4 @@ const signUp = async (
   }
 };
 
-module.exports = { sendLessonCat, signUp, sendMasterInfo };
+module.exports = { signUp, sendMasters };
