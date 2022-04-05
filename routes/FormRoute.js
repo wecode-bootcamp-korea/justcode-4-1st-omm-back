@@ -4,6 +4,6 @@ const router = express.Router();
 const FormController = require("../controllers/FormController");
 
 // GET
-router.get("/questions", FormController.getQuestionsByLessonId);
+router.get("/questions/:lessonId", FormController.getQuestions);
 
 module.exports = router;

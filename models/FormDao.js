@@ -2,10 +2,10 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const getQuestionsByLessonId = async (lessonId) => {
+const getQuestions = async (lessonId) => {
   return await prisma.questions.findMany({
     where: {
-      lesson_category_id: lessonId,
+      lesson_category_id: Number(lessonId),
     },
     select: {
       id: true,
@@ -21,4 +21,4 @@ const getQuestionsByLessonId = async (lessonId) => {
   });
 };
 
-module.exports = { getQuestionsByLessonId };
+module.exports = { getQuestions };
