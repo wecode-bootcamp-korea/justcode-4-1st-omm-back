@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 
-const masterController = require("../controllers/MasterController");
+const MasterController = require("../controllers/MasterController");
 
-router.post("/signup", masterController.signUp);
-router.get("/search", masterController.sendMasters);
+router.get("/search", MasterController.sendMasters);
+router.post("/signup", MasterController.signUp);
 
 module.exports = router;

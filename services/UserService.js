@@ -28,7 +28,6 @@ const sendLogIn = async (email, password) => {
 };
 
 const signup = async (name, email, password) => {
-  console.log(2);
   const emailReg =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
   const pwReg = /(?=.*\d)(?=.*[a-zA-ZS]).{8,}/;
@@ -45,7 +44,7 @@ const signup = async (name, email, password) => {
   }
 
   const user = await UserDao.getUserByEmail(email);
-  console.log("service");
+
   if (user.length !== 0) {
     const error = new Error("EXISTING_USER");
     error.statusCode = 409;
@@ -53,9 +52,8 @@ const signup = async (name, email, password) => {
   }
 
   const encryptedPW = bcrypt.hashSync(password, bcrypt.genSaltSync());
-  console.log(encryptedPW);
   const newUser = await UserDao.createUser(name, email, encryptedPW);
-  console.log(5);
+
   return newUser;
 };
 

@@ -1,7 +1,14 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-const errorGenerator = require("../utils/errorGenerator");
+const findUserInfo = async (inputEmail, inputPhone) => {
+  return await prisma.$queryRaw`
+    SELECT id, name, email, user_image AS userImg, phone_number AS phoneNumber, is_deleted AS isDeleted 
+    FROM users
+    WHERE users.email = ${inputEmail} 
+    OR users.phone_number = ${inputPhone};
+  `;
+};
 
 const createUserDirectMaster = async (
   inputName,
@@ -9,19 +16,23 @@ const createUserDirectMaster = async (
   inputPW,
   inputPhone
 ) => {
-  try {
-    const user = await prisma.users.create({
-      data: {
-        name: inputName,
-        email: inputEmail,
-        password: inputPW,
-        phone_number: inputPhone,
-      },
-    });
-    return user;
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: error.message });
-  }
+  return await prisma.users.create({
+    data: {
+      name: inputName,
+      email: inputEmail,
+      password: inputPW,
+      phone_number: inputPhone,
+    },
+  });
+};
+
+const insertPhoneNum = async (userID, inputPhone) => {
+  return await prisma.$queryRaw`
+    INSERT INTO users (phone_number)
+    VALUES
+    (${inputPhone})
+    WHERE id = ${userID};
+  `;
 };
 
 const sendLogIn = async (email) => {
@@ -38,13 +49,11 @@ const sendLogIn = async (email) => {
 };
 
 const getUserByEmail = async (email) => {
-  console.log("getUserEmail");
   return await prisma.$queryRaw`
-         select id from users where email=${email}
-         `;
+    select id, password from users where email= ${email};`;
 };
+
 const createUser = async (name, email, encryptedPW) => {
-  console.log("dao.createUser");
   const user = await prisma.users.create({
     data: {
       email: email,
@@ -56,6 +65,8 @@ const createUser = async (name, email, encryptedPW) => {
 };
 
 module.exports = {
+  findUserInfo,
+  insertPhoneNum,
   createUserDirectMaster,
   sendLogIn,
   getUserByEmail,
