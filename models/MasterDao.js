@@ -5,23 +5,16 @@ const prisma = new PrismaClient();
 
 const getMasters = async () => {
   try {
-    const search = await prisma.users.findMany({
+    const search = await prisma.masters.findMany({
       select: {
-        id: true,
-        user_image: true,
-        masters: {
+        name: true,
+        intro: true,
+        work_experience: true,
+        reviews: {
           select: {
             id: true,
-            name: true,
-            intro: true,
-            work_experience: true,
-            reviews: {
-              select: {
-                id: true,
-                comment: true,
-                grade: true,
-              },
-            },
+            comment: true,
+            grade: true,
           },
         },
       },

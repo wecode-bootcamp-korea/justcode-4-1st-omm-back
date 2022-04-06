@@ -38,17 +38,21 @@ const sendLogIn = async (email) => {
 };
 
 const getUserByEmail = async (email) => {
+  console.log("getUserEmail");
   return await prisma.$queryRaw`
-         select (id,password) from users where email=${email}}`;
+         select id from users where email=${email}
+         `;
 };
 const createUser = async (name, email, encryptedPW) => {
-  return await prisma.users.create({
+  console.log("dao.createUser");
+  const user = await prisma.users.create({
     data: {
-      name: name,
       email: email,
+      name: name,
       password: encryptedPW,
     },
   });
+  return user;
 };
 
 module.exports = {

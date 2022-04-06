@@ -13,6 +13,7 @@ const sendLogIn = async (req, res) => {
 
 const signup = async (req, res) => {
   try {
+    console.log(1);
     const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
@@ -22,10 +23,9 @@ const signup = async (req, res) => {
     }
 
     const user = await UserService.signup(name, email, password);
-
+    console.log(6);
     return res.status(201).json({
       message: "Created",
-      user_id: user.id,
     });
   } catch (err) {
     return res.status(err.statusCode || 500).json({ message: err.message });
