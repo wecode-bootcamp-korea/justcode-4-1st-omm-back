@@ -45,7 +45,7 @@ model Masters {
   mastersCategories  MastersCategories[]
   mastersRequestForm MastersRequestForm[]
   mastersAddress     MastersAddress[]
-  masterProfileImages MasterProfileImage[]
+  masterPost         MasterPost[]
   @@index([user_id], name: "user_id")
   @@map("masters")
 }
@@ -227,7 +227,7 @@ model MastersAddress {
 
 model ReviewImage {
   id Int @id @default(autoincrement())
-  review_id Int
+  review_id        Int
   review_image_url String @db.VarChar(1000)
   created_at       DateTime? @default(now())
   updated_at       DateTime? @default(now())
@@ -236,13 +236,13 @@ model ReviewImage {
   @@map("reviews_images")
 }
 
-model MasterProfileImage {
-  id Int @id @default(autoincrement())
-  master_id Int 
-  master_profile_images String @db.VarChar(1000)
+model MasterPost {
+  id               Int @id @default(autoincrement())
+  master_id        Int 
+  master_posts     String @db.VarChar(1000)
   created_at       DateTime? @default(now())
   updated_at       DateTime? @default(now())
   
   master Masters @relation(fields: [master_id], references: [id])
-  @@map("master_profile_images")
+  @@map("master_posts")
 }
