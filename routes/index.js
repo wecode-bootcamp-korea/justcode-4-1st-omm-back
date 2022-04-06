@@ -16,5 +16,4 @@ router.use("/category", CategoryRoute);
 router.use("/form", FormRoute);
 router.use("/master", MasterRoute);
 router.use("/address", AddressRoute);
-
 module.exports = router;
