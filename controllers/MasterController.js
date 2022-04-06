@@ -3,7 +3,6 @@ const errorGenerator = require("../utils/errorGenerator");
 
 const signUp = async (req, res, next) => {
     try {
-
         const { Authorization } = req.headers;
 
         const { name, email, password, phoneNumber, lessonCatID, address, detailAddress } = req.body;
@@ -25,7 +24,7 @@ const signUp = async (req, res, next) => {
 
         return res.status(201).json({ message: "SIGNUP_SUCCESS", masterID: newMaster.id, userID: newMaster.user_id });
     } catch (error) {
-        return res.status(500).json({ message: error.message })   
+        return res.status(500).json({ statusCode:error.statusCode, message: error.message })   
     }
 };
 
