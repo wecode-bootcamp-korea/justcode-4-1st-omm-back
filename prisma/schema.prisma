@@ -74,6 +74,7 @@ model LessonCategories {
   MastersCategories MastersCategories[]
   @@index([thema_category_id], name: "thema_category_id")
   @@map("lesson_categories")
+  RequestDeadline RequestDeadline[]
 }
 
 model Questions {
@@ -220,4 +221,17 @@ model MastersAddress {
   @@index([address_id], name: "address_id")
   @@index([detail_address_id], name: "detail_address_id")
   @@map("masters_address")
+}
+
+model RequestDeadline {
+  id                 Int       @id @default(autoincrement())
+  lesson_category_id Int
+  reason             Int
+  created_at         DateTime? @default(now())
+  updated_at         DateTime? @default(now())
+
+  lessons LessonCategories @relation(fields: [lesson_category_id], references: [id])
+
+  @@index([lesson_category_id], name: "lesson_category_id")
+  @@map("request_deadline")
 }
