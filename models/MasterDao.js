@@ -76,24 +76,6 @@ const insertMasterAddress = async (masterID, addressID, detailAddressID) => {
   `;
 };
 
-const findMasterReview = async (masterID) => {
-  try {
-    await prisma.masters.aggregate({
-      _avg: {
-        grade: true,
-      },
-      where: {
-        id: masterID,
-      },
-      orderBy: {
-        id: true,
-      },
-    });
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
-  }
-};
-
 module.exports = {
   getMasters,
   findMasterInfo,
