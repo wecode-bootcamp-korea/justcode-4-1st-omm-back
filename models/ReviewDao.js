@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 const sendReviews = async (masterId) => {
   try {
     return await prisma.$queryRaw`
-        SELECT r.user_id AS userId, r.grade, r.comment
+        SELECT r.user_id AS userId, r.master_id AS masterId, r.grade, r.comment
         FROM reviews r
         JOIN masters m
         ON r.master_id = m.id

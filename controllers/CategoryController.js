@@ -36,7 +36,7 @@ const sendMasters = async (req, res, next) => {
 
     return res.status(200).json(masters);
   } catch (error) {
-    return res.status(err.statusCode || 500).json({ message: "SERVER_ERROR" });
+    return res.status(error.statusCode || 500).json({ message: "SERVER_ERROR" });
   }
 }
 module.exports = { getCategories, sendLessonCat, sendMasters };

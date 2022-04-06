@@ -1,4 +1,5 @@
 const CategoryDao = require("../models/CategoryDao");
+const ReviewDao = require("../models/ReviewDao");
 const errorGenerator = require("../utils/errorGenerator");
 
 const getCategory = async () => {
@@ -15,7 +16,13 @@ const sendLessonCat = async (id) => {
 
 const sendMasters = async (id) => {
   try {
-    return await CategoryDao.sendMasters(id);
+    const catMasters = await CategoryDao.sendMasters(id);
+    const masters = await Promise.all(catMasters.map(async (item) => { 
+      item.reviews = await ReviewDao.sendPreview(item.id)
+      return await item
+    }))
+
+    return masters;
   } catch (error) {
     throw await error;
   }
