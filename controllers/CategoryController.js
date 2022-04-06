@@ -21,7 +21,22 @@ const sendLessonCat = async (req, res, next) => {
     const lessonCat = await CategoryService.sendLessonCat(id);
     return res.status(200).json(lessonCat);
   } catch (error) {
-    return res.status(500).json({ message: "SERVER_ERROR" });
+    return res.status(err.statusCode || 500).json({ message: "SERVER_ERROR" });
   }
 };
-module.exports = { getCategories, sendLessonCat };
+
+const sendMasters = async (req, res, next) => {
+  try {
+    const id = req.params.id;
+
+    if (!id) {
+      throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
+    }
+    const masters = await CategoryService.sendMasters(id);
+
+    return res.status(200).json(masters);
+  } catch (error) {
+    return res.status(err.statusCode || 500).json({ message: "SERVER_ERROR" });
+  }
+}
+module.exports = { getCategories, sendLessonCat, sendMasters };

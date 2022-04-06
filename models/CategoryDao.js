@@ -32,4 +32,20 @@ const sendLessonCat = async (id) => {
   }
 };
 
-module.exports = { getCategory, sendLessonCat };
+const sendMasters = async (id) => {
+  try {
+    return await prisma.$queryRaw`
+      SELECT m.id, name, work_experience AS workExp
+      FROM masters m
+      JOIN masters_categories mc
+      ON mc.master_id = m.id
+      WHERE mc.lesson_category_id = ${id}
+      AND m.is_deleted = false
+      GROUP BY m.id;
+    `
+  } catch (error) {
+    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
+  }
+}
+
+module.exports = { getCategory, sendLessonCat, sendMasters };

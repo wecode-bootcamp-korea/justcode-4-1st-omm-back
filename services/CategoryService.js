@@ -13,4 +13,12 @@ const sendLessonCat = async (id) => {
   }
 };
 
-module.exports = { getCategory, sendLessonCat };
+const sendMasters = async (id) => {
+  try {
+    return await CategoryDao.sendMasters(id);
+  } catch (error) {
+    throw await error;
+  }
+}
+
+module.exports = { getCategory, sendLessonCat, sendMasters };
