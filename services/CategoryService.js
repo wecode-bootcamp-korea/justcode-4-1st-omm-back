@@ -7,7 +7,7 @@ const getCategory = async () => {
 
 const sendLessonCat = async (id) => {
   try {
-    return await masterDao.sendLessonCat(id);
+    return await CategoryDao.sendLessonCat(id);
   } catch (error) {
     throw await error;
   }
