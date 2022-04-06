@@ -36,16 +36,10 @@ const insertPhoneNum = async (userID, inputPhone) => {
 };
 
 const sendLogIn = async (email) => {
-  return await prisma.users.findUnique({
-    where: {
-      email: email,
-    },
-    select: {
-      id: true,
-      email: true,
-      password: true,
-    },
-  });
+  return await prisma.$queryRaw`
+  select id,email,password from users 
+  where email=${email}
+  `;
 };
 
 const getUserByEmail = async (email) => {
@@ -54,14 +48,13 @@ const getUserByEmail = async (email) => {
 };
 
 const createUser = async (name, email, encryptedPW) => {
-  const user = await prisma.users.create({
+  return await prisma.users.create({
     data: {
       email: email,
       name: name,
       password: encryptedPW,
     },
   });
-  return user;
 };
 
 module.exports = {

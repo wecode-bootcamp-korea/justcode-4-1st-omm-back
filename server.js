@@ -8,8 +8,8 @@ const app = express();
 const prisma = new PrismaClient();
 
 app.use(express.json());
-app.use(routes);
 app.use(cors());
+app.use(routes);
 
 const server = createServer(app);
 const PORT = process.env.PORT;
