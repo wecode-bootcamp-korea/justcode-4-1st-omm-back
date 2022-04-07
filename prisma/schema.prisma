@@ -9,8 +9,8 @@ datasource db {
 
 model Users {
   id           Int       @id @default(autoincrement())
-  name         String    @unique
-  email        String
+  name         String
+  email        String    @unique
   password     String
   user_image   String?
   phone_number String?
@@ -19,32 +19,36 @@ model Users {
   updated_at   DateTime? @default(now())
   deleted_at   DateTime? @default(now())
 
-  masters     Masters[]
+  masters     Masters?
   requestForm RequestForm[]
   reviews     Reviews[]
   @@map("users")
 }
 
 model Masters {
-  id              Int       @id @default(autoincrement())
-  user_id         Int       @unique
-  name            String
-  intro           String?
-  start_time      String?
-  end_time        String?
-  work_experience Int?
-  employee_number Int?
-  is_deleted      Boolean   @default(false)
-  created_at      DateTime? @default(now())
-  updated_at      DateTime? @default(now())
-  deleted_at      DateTime? @default(now())
+  id                Int       @id @default(autoincrement())
+  user_id           Int       @unique
+  address_id        Int
+  detail_address_id Int
+  name              String
+  master_image      String?
+  intro             String?
+  start_time        String?
+  end_time          String?
+  work_experience   Int?
+  employee_number   Int?
+  is_deleted        Boolean   @default(false)
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @default(now())
+  deleted_at        DateTime? @default(now())
 
-  users Users @relation(fields: [user_id], references: [id])
+  users         Users         @relation(fields: [user_id], references: [id])
+  address       Address       @relation(fields: [address_id], references: [id])
+  detailAddress DetailAddress @relation(fields: [detail_address_id], references: [id])
 
-  reviews            Reviews[]
-  mastersCategories  MastersCategories[]
-  mastersRequestForm MastersRequestForm[]
-  mastersAddress     MastersAddress[]
+  reviews           Reviews[]
+  mastersCategories MastersCategories[]
+
   @@index([user_id], name: "user_id")
   @@map("masters")
 }
@@ -55,7 +59,7 @@ model ThemaCategories {
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  lessons LessonCategories[]
+  lessonCategories LessonCategories[]
   @@map("thema_categories")
 }
 
@@ -71,10 +75,9 @@ model LessonCategories {
 
   questions         Questions[]
   requestForm       RequestForm[]
-  MastersCategories MastersCategories[]
+  mastersCategories MastersCategories[]
   @@index([thema_category_id], name: "thema_category_id")
   @@map("lesson_categories")
-  RequestDeadline RequestDeadline[]
 }
 
 model Questions {
@@ -87,8 +90,8 @@ model Questions {
 
   lesson_categories LessonCategories @relation(fields: [lesson_category_id], references: [id])
 
-  choices     ChoiceQuestions[]
-  requestForm RequestForm[]
+  choiceQuestions ChoiceQuestions[]
+  requestForm     RequestForm[]
 
   @@index([lesson_category_id], name: "lesson_category_id")
   @@map("questions")
@@ -124,7 +127,6 @@ model RequestForm {
   choice_questions  ChoiceQuestions  @relation(fields: [choice_question_id], references: [id])
   lesson_categories LessonCategories @relation(fields: [lesson_category_id], references: [id])
 
-  mastersRequestForm MastersRequestForm[]
   @@index([user_id], name: "user_id")
   @@index([question_id], name: "question_id")
   @@index([choice_question_id], name: "choice_question_id")
@@ -157,27 +159,12 @@ model MastersCategories {
   created_at         DateTime? @default(now())
   updated_at         DateTime? @default(now())
 
-  masters Masters          @relation(fields: [master_id], references: [id])
-  lessons LessonCategories @relation(fields: [lesson_category_id], references: [id])
+  masters          Masters          @relation(fields: [master_id], references: [id])
+  lessonCategories LessonCategories @relation(fields: [lesson_category_id], references: [id])
 
   @@index([master_id], name: "master_id")
   @@index([lesson_category_id], name: "lesson_category_id")
   @@map("masters_categories")
-}
-
-model MastersRequestForm {
-  id              Int       @id @default(autoincrement())
-  request_form_id Int
-  master_id       Int
-  created_at      DateTime? @default(now())
-  updated_at      DateTime? @default(now())
-
-  masters      Masters     @relation(fields: [master_id], references: [id])
-  request_form RequestForm @relation(fields: [request_form_id], references: [id])
-
-  @@index([master_id], name: "master_id")
-  @@index([request_form_id], name: "request_form_id")
-  @@map("masters_request_form")
 }
 
 model Address {
@@ -186,8 +173,8 @@ model Address {
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
-  details        DetailAddress[]
-  mastersAddress MastersAddress[]
+  detailAddress DetailAddress[]
+  masters       Masters[]
   @@map("address")
 }
 
@@ -200,38 +187,7 @@ model DetailAddress {
 
   address Address @relation(fields: [address_id], references: [id])
 
-  mastersAddress MastersAddress[]
+  masters Masters[]
   @@index([address_id], name: "address_id")
   @@map("detail_address")
-}
-
-model MastersAddress {
-  id                Int       @id @default(autoincrement())
-  master_id         Int
-  address_id        Int
-  detail_address_id Int
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @default(now())
-
-  masters        Masters       @relation(fields: [master_id], references: [id])
-  address        Address       @relation(fields: [address_id], references: [id])
-  detail_address DetailAddress @relation(fields: [detail_address_id], references: [id])
-
-  @@index([master_id], name: "master_id")
-  @@index([address_id], name: "address_id")
-  @@index([detail_address_id], name: "detail_address_id")
-  @@map("masters_address")
-}
-
-model RequestDeadline {
-  id                 Int       @id @default(autoincrement())
-  lesson_category_id Int
-  reason             Int
-  created_at         DateTime? @default(now())
-  updated_at         DateTime? @default(now())
-
-  lessons LessonCategories @relation(fields: [lesson_category_id], references: [id])
-
-  @@index([lesson_category_id], name: "lesson_category_id")
-  @@map("request_deadline")
 }
