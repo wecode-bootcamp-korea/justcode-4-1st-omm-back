@@ -173,14 +173,6 @@ const findMasterAddress = async (address, detailAddress) => {
   return { addressID, detailAddressID };
 };
 
-// const insertMasterAddress = async (masterID, addressID, detailAddressID) => {
-//   return await prisma.$queryRaw`
-//     INSERT INTO masters_address (master_id, address_id, detail_address_id)
-//     VALUES
-//     (${masterID}, ${addressID}, ${detailAddressID});
-//   `;
-// };
-
 const getMasterProfile = async (masterId) => {
   return await prisma.masters.findUnique({
     where: {
