@@ -7,7 +7,6 @@ const UserDao = require("../models/UserDao");
 
 const sendMasters = async () => {
   try {
-    console.log("service");
     return await MasterDao.getMasters();
   } catch (err) {
     return res.status(500).json({ message: "SERVER_ERROR" });
