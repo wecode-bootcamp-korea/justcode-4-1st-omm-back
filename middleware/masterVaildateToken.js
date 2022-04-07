@@ -7,8 +7,8 @@ const { SECRET_KEY } = process.env;
 const validateToken = async (req, res, next) => {
   try {
     const { token } = req.headers;
-    if (!token || token === 'null') {
 
+    if (!token || token === 'null' || token === undefined) {
       throw await errorGenerator({
         statusCode: 400,
         message: "TOKEN_UNDEFINED",
@@ -24,9 +24,8 @@ const validateToken = async (req, res, next) => {
     }
 
     const findMaster = await MasterService.getMasterByUserId(id);
-    const findUser = await UserService.getUserByUserId(id);
 
-    if (!findMaster && !findUser) {
+    if (!findMaster) {
       throw await errorGenerator({
         statusCode: 404,
         message: "USER_NOT_FOUND",
