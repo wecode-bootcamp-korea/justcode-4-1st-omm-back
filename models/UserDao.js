@@ -1,14 +1,13 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
-
 const findUserInfo = async (inputEmail, inputPhone) => {
   return await prisma.$queryRaw`
     SELECT id, name, email, user_image AS userImg, phone_number AS phoneNumber, is_deleted AS isDeleted 
     FROM users
     WHERE users.email = ${inputEmail} 
     OR users.phone_number = ${inputPhone};
-  `
+  `;
 };
 
 const createUserDirectMaster = async (
@@ -33,25 +32,17 @@ const insertPhoneNum = async (userID, inputPhone) => {
     VALUES
     (${inputPhone})
     WHERE id = ${userID};
-  `
-}
+  `;
+};
 
 const sendLogIn = async (email) => {
-  return await prisma.users.findUnique({
-    where: {
-      email: email,
-    },
-    select: {
-      id: true,
-      email: true,
-      password: true,
-    },
-  });
+  return await prisma.$queryRaw`select id, email, password from users
+  where email=${email}`;
 };
 
 const getUserByEmail = async (email) => {
   return await prisma.$queryRaw`
-    select id, password from users where email= ${email};`
+    select id, password from users where email= ${email};`;
 };
 
 const createUser = async (name, email, encryptedPW) => {

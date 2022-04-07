@@ -114,7 +114,6 @@ const setMasterProfile = async (params) => {
 };
 module.exports = {
   signUp,
-  sendMasterReview,
   getMasterProfile,
   setMasterProfile,
 };
