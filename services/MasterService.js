@@ -112,9 +112,13 @@ const getMasterProfile = async (masterId) => {
 const setMasterProfile = async (params) => {
   return await MasterDao.setMasterProfile(params);
 };
+
+const getMasterByUserId = async (userId) => {
+  return await MasterDao.getMasterByUserId(userId);
+};
 module.exports = {
   signUp,
-  sendMasterReview,
   getMasterProfile,
   setMasterProfile,
+  getMasterByUserId,
 };

@@ -6,21 +6,21 @@ const jwt = require("jsonwebtoken");
 const sendLogIn = async (email, password) => {
   const userDB = await UserDao.sendLogIn(email);
 
-  if (userDB.length === 0) {
+  if (!userDB) {
     throw errorGenerator({
       statusCode: 404,
       message: "존재하지 않는 사용자입니다.",
     });
   }
 
-  if (!(await bcrypt.compare(password, userDB[0].password))) {
+  if (!(await bcrypt.compare(password, userDB.password))) {
     throw new errorGenerator({
       statusCode: 400,
       message: "잘못된 아이디 혹은 비밀번호입니다.",
     });
   }
   const token = jwt.sign(
-    { id: userDB[0].id, expired_in: "1hr" },
+    { id: userDB.id, expired_in: "1hr" },
     process.env.SECRET_KEY
   );
 
