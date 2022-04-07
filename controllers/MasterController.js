@@ -104,4 +104,16 @@ const setMasterProfile = async (req, res, next) => {
   }
 };
 
-module.exports = { sendMasters, signUp, getMasterProfile, setMasterProfile };
+const getMastersByCategory = async (req, res, next) => {
+  try {
+    const {category}  = req.params;
+
+    const getMasters = await MasterService.getMastersByCategory(category);
+
+    return res.status(200).json({ message: "SUCCESS",getMasters });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+};
+
+module.exports = { sendMasters, signUp, getMasterProfile, setMasterProfile, getMastersByCategory };

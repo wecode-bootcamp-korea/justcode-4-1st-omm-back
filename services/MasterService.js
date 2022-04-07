@@ -115,10 +115,16 @@ const setMasterProfile = async (params) => {
 const getMasterByUserId = async (userId) => {
   return await MasterDao.getMasterByUserId(userId);
 };
+
+const getMastersByCategory = async (category) => {
+  return await MasterDao.getMastersByCategory(category);
+};
+
 module.exports = {
   signUp,
   sendMasters,
   getMasterProfile,
   setMasterProfile,
   getMasterByUserId,
+  getMastersByCategory,
 };
