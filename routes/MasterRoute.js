@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 
 const MasterController = require("../controllers/MasterController");
-
 const _vaildateToken = require("../middleware/_vaildateToken");
 
 // GET
