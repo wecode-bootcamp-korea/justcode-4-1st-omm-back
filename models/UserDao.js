@@ -38,7 +38,6 @@ const insertPhoneNum = async (userID, inputPhone) => {
 const sendLogIn = async (email) => {
   return await prisma.$queryRaw`select id, email, password from users
   where email=${email}`;
-  console.log("findUnique from userDao : ", loginDB);
 };
 
 const getUserByEmail = async (email) => {
