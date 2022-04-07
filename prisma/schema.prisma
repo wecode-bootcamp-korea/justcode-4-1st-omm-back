@@ -76,7 +76,6 @@ model LessonCategories {
   questions         Questions[]
   requestForm       RequestForm[]
   mastersCategories MastersCategories[]
-  RequestDeadline   RequestDeadline[]
   @@index([thema_category_id], name: "thema_category_id")
   @@map("lesson_categories")
 }
