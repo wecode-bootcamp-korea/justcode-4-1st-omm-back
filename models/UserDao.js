@@ -36,8 +36,10 @@ const insertPhoneNum = async (userID, inputPhone) => {
 };
 
 const sendLogIn = async (email) => {
-  return await prisma.$queryRaw`select id, email, password from users
-  where email=${email}`;
+  return await prisma.$queryRaw`
+  select id,email,password from users 
+  where email=${email}
+  `;
 };
 
 const getUserByEmail = async (email) => {
@@ -48,8 +50,8 @@ const getUserByEmail = async (email) => {
 const createUser = async (name, email, encryptedPW) => {
   return await prisma.users.create({
     data: {
-      name: name,
       email: email,
+      name: name,
       password: encryptedPW,
     },
   });

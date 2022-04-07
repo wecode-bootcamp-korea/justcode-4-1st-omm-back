@@ -5,6 +5,14 @@ const errorGenerator = require("../utils/errorGenerator");
 const MasterDao = require("../models/MasterDao");
 const UserDao = require("../models/UserDao");
 
+const sendMasters = async () => {
+  try {
+    return await MasterDao.getMasters();
+  } catch (err) {
+    return res.status(500).json({ message: "SERVER_ERROR" });
+  }
+};
+
 const signUp = async (
   name,
   email,
@@ -118,6 +126,7 @@ const getMasterByUserId = async (userId) => {
 };
 module.exports = {
   signUp,
+  sendMasters,
   getMasterProfile,
   setMasterProfile,
   getMasterByUserId,

@@ -1,6 +1,15 @@
 const MasterService = require("../services/MasterService");
 const errorGenerator = require("../utils/errorGenerator");
 
+const sendMasters = async (req, res) => {
+  try {
+    const search = await MasterService.sendMasters();
+    return res.status(200).json(search);
+  } catch (err) {
+    return res.status(500).json({ message: "SERVER_ERROR" });
+  }
+};
+
 const signUp = async (req, res, next) => {
   try {
     const { Authorization } = req.headers;
@@ -93,4 +102,5 @@ const setMasterProfile = async (req, res, next) => {
     return res.status(error.statusCode || 500).json({ message: error.message });
   }
 };
-module.exports = { signUp, getMasterProfile, setMasterProfile };
+
+module.exports = { sendMasters, signUp, getMasterProfile, setMasterProfile };
