@@ -4,21 +4,28 @@ const prisma = new PrismaClient();
 
 const getMasters = async () => {
   try {
-    const search = await prisma.masters.findMany({
+    console.log("DAO GETMASTERS");
+    const search = await prisma.users.findMany({
+      where: { NOT: { masters: null } },
       select: {
+        id: true,
+        user_image: true,
         name: true,
-        intro: true,
-        work_experience: true,
-        reviews: {
+        masters: {
           select: {
-            id: true,
-            comment: true,
-            grade: true,
+            name: true,
+            intro: true,
+            work_experience: true,
+            reviews: {
+              select: {
+                comment: true,
+                grade: true,
+              },
+            },
           },
         },
       },
     });
-
     return search;
   } catch (err) {}
 };

@@ -19,7 +19,7 @@ model Users {
   updated_at   DateTime? @default(now())
   deleted_at   DateTime? @default(now())
 
-  masters     Masters[]
+  masters     Masters?
   requestForm RequestForm[]
   reviews     Reviews[]
   @@map("users")
@@ -72,9 +72,9 @@ model LessonCategories {
   questions         Questions[]
   requestForm       RequestForm[]
   MastersCategories MastersCategories[]
+  RequestDeadline   RequestDeadline[]
   @@index([thema_category_id], name: "thema_category_id")
   @@map("lesson_categories")
-  RequestDeadline RequestDeadline[]
 }
 
 model Questions {

@@ -180,6 +180,18 @@ CREATE TABLE `masters_address` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `request_deadline` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `lesson_category_id` INTEGER NOT NULL,
+    `reason` INTEGER NOT NULL,
+    `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `lesson_category_id`(`lesson_category_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `masters` ADD CONSTRAINT `masters_user_id_fkey` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
@@ -233,3 +245,6 @@ ALTER TABLE `masters_address` ADD CONSTRAINT `masters_address_address_id_fkey` F
 
 -- AddForeignKey
 ALTER TABLE `masters_address` ADD CONSTRAINT `masters_address_detail_address_id_fkey` FOREIGN KEY (`detail_address_id`) REFERENCES `detail_address`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `request_deadline` ADD CONSTRAINT `request_deadline_lesson_category_id_fkey` FOREIGN KEY (`lesson_category_id`) REFERENCES `lesson_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
