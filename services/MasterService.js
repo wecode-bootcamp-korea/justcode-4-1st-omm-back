@@ -105,15 +105,6 @@ const signUp = async (
   }
 };
 
-const sendMasterReview = async (masterID) => {
-  try {
-    const masterReivew = MasterDao.findMasterReview(id);
-    return masterReivew;
-  } catch (error) {
-    throw await error;
-  }
-};
-
 const getMasterProfile = async (masterId) => {
   return await MasterDao.getMasterProfile(masterId);
 };
