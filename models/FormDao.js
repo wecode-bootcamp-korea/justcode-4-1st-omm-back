@@ -21,8 +21,13 @@ const getQuestions = async (lessonId) => {
   });
 };
 
+const getLessonCategoryId = async (lessonId) =>{
+  return  await prisma.$queryRaw`
+  SELECT id FROM request_form WHERE lesson_category_id = ${lessonId};
+  `
+};
+
 const postQuestion = async (question) =>{
-  console.log(question);
   return  await prisma.$queryRaw`
   INSERT INTO request_form (user_id, lesson_category_id, question_id, choice_question_id)
   VALUES
@@ -30,4 +35,4 @@ const postQuestion = async (question) =>{
 `
 }
 
-module.exports = { getQuestions, postQuestion };
+module.exports = { getQuestions, postQuestion, getLessonCategoryId };
