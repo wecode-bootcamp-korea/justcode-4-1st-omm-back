@@ -55,10 +55,74 @@ const insertMasterAddress = async (masterID, addressID, detailAddressID) => {
   `;
 };
 
+const getMasterProfile = async (masterId) => {
+  return await prisma.masters.findUnique({
+    where: {
+      id: masterId,
+    },
+    select: {
+      id: true,
+      name: true,
+      intro: true,
+      master_image: true,
+      start_time: true,
+      end_time: true,
+      work_experience: true,
+      employee_number: true,
+      address: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      detailAddress: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      mastersCategories: {
+        select: {
+          id: true,
+          is_main: true,
+          lessonCategories: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      reviews: {
+        select: {
+          id: true,
+          grade: true,
+          comment: true,
+          users: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
+const setMasterProfile = async (params) => {
+  const { type, value, user } = params;
+
+  return await prisma.$queryRaw`
+  UPDATE masters t SET t.${type} = ${value} WHERE t.id = ${user.id}
+  `;
+};
 module.exports = {
   findMasterInfo,
   createMaster,
   insertMasterCat,
   findMasterAddress,
   insertMasterAddress,
+  getMasterProfile,
+  setMasterProfile,
 };

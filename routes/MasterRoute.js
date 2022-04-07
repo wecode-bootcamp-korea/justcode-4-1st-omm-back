@@ -3,6 +3,13 @@ const router = express.Router();
 
 const MasterController = require("../controllers/MasterController");
 
+// GET
+router.get("/profile/:masterId", MasterController.getMasterProfile);
+
+// PUT
+router.put("/profile", MasterController.setMasterProfile);
+
+// POST
 router.post("/signup", MasterController.signUp);
 
 module.exports = router;
