@@ -76,8 +76,8 @@ const signUp = async (req, res, next) => {
 
 const getMasterProfile = async (req, res, next) => {
   try {
-    const { masterId } = req.params;
-    const master = await MasterService.getMasterProfile(Number(masterId));
+    const { id } = req.master;
+    const master = await MasterService.getMasterProfile(Number(id));
     return res.status(201).json({
       message: "SUCCESS",
       master,

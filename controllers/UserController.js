@@ -1,5 +1,5 @@
 const UserService = require("../services/UserService");
-const errorGenerator = require("../utils/errorGenerator");
+// const errorGenerator = require("../utils/errorGenerator");
 
 const sendLogIn = async (req, res) => {
   try {
