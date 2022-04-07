@@ -3,8 +3,9 @@ const errorGenerator = require("../utils/errorGenerator");
 
 const sendMasters = async (req, res) => {
   try {
-    const search = await MasterService.sendMasters();
-    return res.status(200).json(search);
+    const search = req.query;
+    const masters = await MasterService.sendMasters(search);
+    return res.status(200).json(masters);
   } catch (err) {
     return res.status(500).json({ message: "SERVER_ERROR" });
   }
