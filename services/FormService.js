@@ -5,4 +5,10 @@ const getQuestions = async (lessonId) => {
   return await FormDao.getQuestions(lessonId);
 };
 
-module.exports = { getQuestions };
+const postQuestions = async (questionForm) =>{
+  for(let i=0; i< questionForm.length; i++){
+    await FormDao.postQuestion(questionForm[i]);
+  }
+}
+
+module.exports = { getQuestions, postQuestions };
