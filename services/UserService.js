@@ -61,5 +61,8 @@ const signup = async (name, email, password) => {
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
+const getUserByUserId = async (userId) => {
+  return await UserDao.getUserByUserId(userId);
+};
 
-module.exports = { sendLogIn, signup };
+module.exports = { sendLogIn, signup, getUserByUserId };
