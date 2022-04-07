@@ -3,30 +3,27 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getMasters = async () => {
-  try {
-    const search = await prisma.users.findMany({
-      where: { NOT: { masters: null } },
-      select: {
-        id: true,
-        name: true,
-        masters: {
-          select: {
-            name: true,
-            master_image: true,
-            intro: true,
-            work_experience: true,
-            reviews: {
-              select: {
-                comment: true,
-                grade: true,
-              },
+  return await prisma.masters.findMany({
+    select: {
+      id: true,
+      name: true,
+      intro: true,
+      master_image: true,
+      reviews: {
+        select: {
+          id: true,
+          comment: true,
+          grade: true,
+          users: {
+            select: {
+              id: true,
+              name: true,
             },
           },
         },
       },
-    });
-    return search;
-  } catch (err) {}
+    },
+  });
 };
 
 const findMasterInfo = async (userID) => {
