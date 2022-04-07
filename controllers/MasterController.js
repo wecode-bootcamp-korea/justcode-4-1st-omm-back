@@ -9,16 +9,6 @@ const sendMasters = async (req, res) => {
     return res.status(500).json({ message: "SERVER_ERROR" });
   }
 };
-const sendCategories = async (req, res, next) => {
-  try {
-    const category = req.params.category;
-
-    const lessonCat = await masterService.sendLessonCat(category);
-    return res.status(200).json(lessonCat);
-  } catch (error) {
-    return res.status(500).json({ message: "SERVER_ERROR" });
-  }
-};
 
 const signUp = async (req, res, next) => {
   try {
@@ -74,16 +64,43 @@ const signUp = async (req, res, next) => {
       detailAddress
     );
 
-    return res
-      .status(201)
-      .json({
-        message: "SIGNUP_SUCCESS",
-        masterID: newMaster.id,
-        userID: newMaster.user_id,
-      });
+    return res.status(201).json({
+      message: "SIGNUP_SUCCESS",
+      masterID: newMaster.id,
+      userID: newMaster.user_id,
+    });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-module.exports = { sendCategories, signUp, sendMasters };
+const getMasterProfile = async (req, res, next) => {
+  try {
+    const { masterId } = req.params;
+    const master = await MasterService.getMasterProfile(Number(masterId));
+    return res.status(201).json({
+      message: "SUCCESS",
+      master,
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+};
+
+const setMasterProfile = async (req, res, next) => {
+  try {
+    const { type, value, user } = req.body;
+    // const { user } = req;
+    if (!type || !value || !user) {
+      throw await errorGenerator({
+        statusCode: 400,
+        message: "KEY_ERROR",
+      });
+    }
+    await MasterService.setMasterProfile({ type, value, user });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+};
+
+module.exports = { sendMasters, signUp, getMasterProfile, setMasterProfile };

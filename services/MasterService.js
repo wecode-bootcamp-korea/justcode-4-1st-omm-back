@@ -113,13 +113,16 @@ const signUp = async (
   }
 };
 
-const sendMasterReview = async (masterID) => {
-  try {
-    const masterReivew = MasterDao.findMasterReview(id);
-    return masterReivew;
-  } catch (error) {
-    throw await error;
-  }
+const getMasterProfile = async (masterId) => {
+  return await MasterDao.getMasterProfile(masterId);
 };
 
-module.exports = { sendMasters, signUp, sendMasterReview };
+const setMasterProfile = async (params) => {
+  return await MasterDao.setMasterProfile(params);
+};
+module.exports = {
+  signUp,
+  sendMasters,
+  getMasterProfile,
+  setMasterProfile,
+};

@@ -8,7 +8,7 @@ const getAddress = async () => {
     select: {
       id: true,
       name: true,
-      details: {
+      detailAddress: {
         select: {
           id: true,
           name: true,
