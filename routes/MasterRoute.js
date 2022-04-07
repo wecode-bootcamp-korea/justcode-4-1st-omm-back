@@ -2,9 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const MasterController = require("../controllers/MasterController");
+const _vaildateToken = require("../middleware/_vaildateToken");
 
 // GET
-router.get("/profile/:masterId", MasterController.getMasterProfile);
+router.get("/profile", _vaildateToken, MasterController.getMasterProfile);
 
 // PUT
 router.put("/profile", MasterController.setMasterProfile);
