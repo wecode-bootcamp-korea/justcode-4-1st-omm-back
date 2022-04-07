@@ -8,7 +8,7 @@ const validateToken = async (req, res, next) => {
   try {
     const { token } = req.headers;
     if (!token || token === 'null') {
-      console.log("hely");
+
       throw await errorGenerator({
         statusCode: 400,
         message: "TOKEN_UNDEFINED",
