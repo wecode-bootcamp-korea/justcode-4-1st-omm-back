@@ -55,10 +55,17 @@ const insertMasterAddress = async (masterID, addressID, detailAddressID) => {
   `;
 };
 
+const isMaster = async (masterID) => {
+  return await prisma.$queryRaw`
+    SELECT id, name FROM masters WHERE id = ${masterID};
+  `
+}
+
 module.exports = {
   findMasterInfo,
   createMaster,
   insertMasterCat,
   findMasterAddress,
   insertMasterAddress,
+  isMaster
 };
