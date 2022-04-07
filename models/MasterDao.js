@@ -3,10 +3,10 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getMasters = async (params) => {
-  const { addressId, lessonId } = params;
-
+  const { addressId, lessonId, take } = params;
   let data = {};
   data = {
+    take: Number(take),
     select: {
       id: true,
       name: true,
@@ -86,8 +86,7 @@ const createMaster = async (userID, name, addressID, detailAddressID) => {
 };
 
 const insertMasterCat = async (masterID, lessonCatID) => {
-
-  console.log(lessonCatID)
+  console.log(lessonCatID);
   return lessonCatID.map(async (catID) => {
     await prisma.$queryRaw`
         INSERT INTO masters_categories (master_id, lesson_category_id, is_main)
@@ -184,6 +183,17 @@ const getMasterByUserId = async (userId) => {
     },
   });
 };
+
+const getMastersByCategory = async (category) =>{
+  return await prisma.$queryRaw`
+  SELECT m.name as goso_name, m.master_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
+  FROM masters_categories
+  LEFT JOIN masters m ON m.id = masters_categories.master_id
+  LEFT JOIN reviews r ON r.master_id = masters_categories.master_id
+  WHERE masters_categories.lesson_category_id=${category}
+  GROUP BY m.name,m.master_image, m.work_experience, r.grade
+  `;
+};
 module.exports = {
   getMasters,
   findMasterInfo,
@@ -193,4 +203,5 @@ module.exports = {
   getMasterProfile,
   setMasterProfile,
   getMasterByUserId,
+  getMastersByCategory
 };
