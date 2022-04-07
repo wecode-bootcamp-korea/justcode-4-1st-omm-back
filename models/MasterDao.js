@@ -74,21 +74,25 @@ const findMasterInfo = async (userID) => {
   `;
 };
 
-const createMaster = async (userID, name) => {
+const createMaster = async (userID, name, addressID, detailAddressID) => {
   return await prisma.masters.create({
     data: {
       user_id: userID,
       name: name,
+      address_id: addressID,
+      detail_address_id: detailAddressID,
     },
   });
 };
 
 const insertMasterCat = async (masterID, lessonCatID) => {
+
+  console.log(lessonCatID)
   return lessonCatID.map(async (catID) => {
     await prisma.$queryRaw`
         INSERT INTO masters_categories (master_id, lesson_category_id, is_main)
         VALUES
-        (${masterID}, ${catID}, false);
+        (${masterID}, ${Number(catID)}, false);
     `;
   });
 };
@@ -105,14 +109,6 @@ const findMasterAddress = async (address, detailAddress) => {
   `;
 
   return { addressID, detailAddressID };
-};
-
-const insertMasterAddress = async (masterID, addressID, detailAddressID) => {
-  return await prisma.$queryRaw`
-    INSERT INTO masters_address (master_id, address_id, detail_address_id)
-    VALUES
-    (${masterID}, ${addressID}, ${detailAddressID});
-  `;
 };
 
 const getMasterProfile = async (masterId) => {
@@ -194,7 +190,6 @@ module.exports = {
   createMaster,
   insertMasterCat,
   findMasterAddress,
-  insertMasterAddress,
   getMasterProfile,
   setMasterProfile,
   getMasterByUserId,
