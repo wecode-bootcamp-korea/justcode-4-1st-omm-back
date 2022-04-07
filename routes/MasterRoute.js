@@ -3,7 +3,7 @@ const router = express.Router();
 
 const MasterController = require("../controllers/MasterController");
 // Get
-router.get("/search", MasterController.sendMasters);
+router.get("/list", MasterController.sendMasters);
 
 // GET
 router.get("/profile/:masterId", MasterController.getMasterProfile);
