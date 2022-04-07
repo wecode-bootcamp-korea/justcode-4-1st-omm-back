@@ -7,7 +7,7 @@ const getCategory = async () => {
     select: {
       id: true,
       name: true,
-      lessons: {
+      lessonCategories: {
         select: {
           id: true,
           name: true,
