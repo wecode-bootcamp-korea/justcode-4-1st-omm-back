@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const errorGenerator = require("../utils/errorGenerator");
-const UserService = require("../services/UsersService");
+const MasterService = require("../services/MasterService");
+
 const { SECRET_KEY } = process.env;
 
 const validateToken = async (req, res, next) => {
@@ -13,32 +14,26 @@ const validateToken = async (req, res, next) => {
         message: "TOKEN_UNDEFINED",
       });
     }
+    const { id } = jwt.verify(token, SECRET_KEY);
 
-    const { user } = jwt.verify(token, SECRET_KEY);
-
-    if (!user.id) {
+    if (!id) {
       throw await errorGenerator({
         statusCode: 400,
         message: "INCORRECT_TOKEN",
       });
     }
 
-    // const foundUser = await UserService.getUserById(user.id);
-
-    // if (foundUser.length !== 0) {
-    //   throw await errorGenerator({
-    //     statusCode: 404,
-    //     message: "USER_NOT_FOUND",
-    //   });
-    // }
-
-    // req.foundUser = foundUser;
-
-    req.user = user;
+    const findMaster = await MasterService.getMasterByUserId(id);
+    if (!findMaster) {
+      throw await errorGenerator({
+        statusCode: 404,
+        message: "USER_NOT_FOUND",
+      });
+    }
+    req.master = findMaster;
 
     next();
   } catch (err) {
-    console.log("middleware vaildateToken err >>> ", err);
     return res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
