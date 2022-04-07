@@ -117,6 +117,17 @@ const setMasterProfile = async (params) => {
   UPDATE masters t SET t.${type} = ${value} WHERE t.id = ${user.id}
   `;
 };
+
+const getMasterByUserId = async (userId) => {
+  return await prisma.masters.findUnique({
+    where: {
+      user_id: userId,
+    },
+    select: {
+      id: true,
+    },
+  });
+};
 module.exports = {
   findMasterInfo,
   createMaster,
@@ -125,4 +136,5 @@ module.exports = {
   insertMasterAddress,
   getMasterProfile,
   setMasterProfile,
+  getMasterByUserId,
 };
