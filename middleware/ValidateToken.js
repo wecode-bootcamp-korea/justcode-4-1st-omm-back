@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const ValidateToken = async (req, res, next) => {
   const { authorization } = req.headers;
-  console.log("aa  :", authorization);
+
   if(authorization === undefined){
     return res.status(403).json({ message: "로그인이 필요합니다." });
   }

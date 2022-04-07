@@ -7,7 +7,7 @@ const { SECRET_KEY } = process.env;
 const validateToken = async (req, res, next) => {
   try {
     const { token } = req.headers;
-    console.log("hey", token);
+
     if (!token || token === 'null' || token === undefined) {
       throw await errorGenerator({
         statusCode: 400,

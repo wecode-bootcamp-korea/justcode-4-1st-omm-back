@@ -6,7 +6,6 @@ const getReceive = async () => {
   for(let i=0; i<objArrays.length; i++){
     objArrays[i].goso_images = await ReceiveDao.getGosoList(objArrays[i].lesson_category_id);
   }
-  console.log(objArrays);
   return objArrays;
 };
 

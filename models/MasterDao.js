@@ -252,6 +252,17 @@ const getMasterByUserId = async (userId) => {
     },
   });
 };
+
+const getMastersByCategory = async (category) =>{
+  return await prisma.$queryRaw`
+  SELECT m.name as goso_name, m.master_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
+  FROM masters_categories
+  LEFT JOIN masters m ON m.id = masters_categories.master_id
+  LEFT JOIN reviews r ON r.master_id = masters_categories.master_id
+  WHERE masters_categories.lesson_category_id=${category}
+  GROUP BY m.name,m.master_image, m.work_experience, r.grade
+  `;
+};
 module.exports = {
   getMasters,
   findMasterInfo,
@@ -262,4 +273,5 @@ module.exports = {
   getMasterProfile,
   setMasterProfile,
   getMasterByUserId,
+  getMastersByCategory
 };
