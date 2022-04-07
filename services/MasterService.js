@@ -4,6 +4,7 @@ const errorGenerator = require("../utils/errorGenerator");
 
 const MasterDao = require("../models/MasterDao");
 const UserDao = require("../models/UserDao");
+const { type } = require("express/lib/response");
 
 const sendMasters = async (params) => {
   return await MasterDao.getMasters(params);
@@ -88,20 +89,14 @@ const signUp = async (
     const userID = userInfo[0].id;
 
     // master 테이블에 추가
-    const master = await MasterDao.createMaster(userID, name);
-
-    await MasterDao.insertMasterCat(master.id, lessonCatID);
-
     const masterAddress = await MasterDao.findMasterAddress(
       address,
       detailAddress
     );
 
-    await MasterDao.insertMasterAddress(
-      master.id,
-      masterAddress.addressID[0].id,
-      masterAddress.detailAddressID[0].id
-    );
+    const master = await MasterDao.createMaster(userID, name, masterAddress.addressID[0].id, masterAddress.detailAddressID[0].id);
+
+    await MasterDao.insertMasterCat(master.id, lessonCatID);
 
     return master;
   } catch (error) {
