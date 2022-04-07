@@ -1,13 +1,13 @@
 const FormService = require("../services/FormService");
 const errorGenerator = require("../utils/errorGenerator");
 
-const getQuestionsByLessonId = async (req, res, next) => {
+const getQuestions = async (req, res, next) => {
   try {
-    const { lessonId } = req.body;
+    const { lessonId } = req.params;
     if (!lessonId) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
-    const questions = await FormService.getQuestionsByLessonId(lessonId);
+    const questions = await FormService.getQuestions(lessonId);
 
     return res.status(200).json({ message: "SUCCESS", questions });
   } catch (err) {
@@ -15,4 +15,17 @@ const getQuestionsByLessonId = async (req, res, next) => {
   }
 };
 
-module.exports = { getQuestionsByLessonId };
+const postQuestions = async (req, res, next) => {
+  try {
+    const questionForm = req.body;
+    
+    const ret = await FormService.postQuestions(questionForm);
+
+    return res.status(200).json({ message: "SUCCESS"});
+  } catch (err) {
+    console.log(err);
+    res.status(err.statusCode || 500).json({ message: err.message });
+  }
+};
+
+module.exports = { getQuestions, postQuestions };

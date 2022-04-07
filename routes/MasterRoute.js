@@ -1,10 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const masterController = require("../controllers/MasterController");
+const MasterController = require("../controllers/MasterController");
 
-router.get("/:category", masterController.sendCategories);
+// GET
+router.get("/profile/:masterId", MasterController.getMasterProfile);
 
-router.post("/welcome/:category", masterController.signUp);
+// PUT
+router.put("/profile", MasterController.setMasterProfile);
+
+// POST
+router.post("/signup", MasterController.signUp);
 
 module.exports = router;

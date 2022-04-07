@@ -1,84 +1,128 @@
-const errorGenerator = require("../utils/errorGenerator");
 const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const sendLessonCat = async (category) => {
-  try {
-    const lessonCat = await prisma.$queryRaw`
-        SELECT lc.id, lc.name 
-        FROM lesson_categories lc
-        JOIN thema_categories tc
-        ON lc.thema_category_id = tc.id
-        WHERE tc.name = ${category};
-        `;
-    return lessonCat;
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
-  }
+const findMasterInfo = async (userID) => {
+  return await prisma.$queryRaw`
+    SELECT id, user_id AS userID, intro, 
+    start_time AS startTime, end_time AS endTime,
+    work_experience AS workExperience, employee_number AS employeeNumber, 
+    is_deleted AS isDeleted,
+    created_at AS createdAt, updated_at AS updatedAt
+    FROM masters
+    WHERE id = ${userID};
+  `;
 };
 
-const createMaster = async (userID) => {
-  try {
-    const master = await prisma.masters.create({
-      data: {
-        user_id: Number(userID),
-      },
-    });
-    return master;
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
-  }
+const createMaster = async (userID, name) => {
+  return await prisma.masters.create({
+    data: {
+      user_id: userID,
+      name: name,
+    },
+  });
 };
 
 const insertMasterCat = async (masterID, lessonCatID) => {
-  try {
-    lessonCatID.map(async (catID) => {
-      await prisma.$queryRaw`
-            INSERT INTO masters_categories (master_id, lesson_category_id, is_main)
-            VALUES
-            (${masterID}, ${catID}, false);
-        `;
-    });
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
-  }
-};
-
-const findMasterAddress = async (adress, detailAdress) => {
-  try {
-    const adressID = await prisma.$queryRaw`
-            SELECT id FROM adress
-            WHERE name = ${adress};
-        `;
-
-    const detailAdressID = await prisma.$queryRaw`
-            SELECT id FROM detail_adress
-            WHERE name = ${detailAdress};
-        `;
-
-    return { adressID, detailAdressID };
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
-  }
-};
-
-const insertMasterAddress = async (masterID, adressID, detailAdressID) => {
-  try {
+  return lessonCatID.map(async (catID) => {
     await prisma.$queryRaw`
-            INSERT INTO masters_adress (master_id, adress_id, detail_adress_id)
-            VALUES
-            (${masterID}, ${adressID}, ${detailAdressID});
-        `;
-  } catch (error) {
-    throw await errorGenerator({ statusCode: 500, message: "SERVER_ERROR" });
-  }
+        INSERT INTO masters_categories (master_id, lesson_category_id, is_main)
+        VALUES
+        (${masterID}, ${catID}, false);
+    `;
+  });
 };
 
+const findMasterAddress = async (address, detailAddress) => {
+  const addressID = await prisma.$queryRaw`
+      SELECT id FROM address
+      WHERE name = ${address};
+  `;
+
+  const detailAddressID = await prisma.$queryRaw`
+      SELECT id FROM detail_address
+      WHERE name = ${detailAddress};
+  `;
+
+  return { addressID, detailAddressID };
+};
+
+const insertMasterAddress = async (masterID, addressID, detailAddressID) => {
+  return await prisma.$queryRaw`
+    INSERT INTO masters_address (master_id, address_id, detail_address_id)
+    VALUES
+    (${masterID}, ${addressID}, ${detailAddressID});
+  `;
+};
+
+const getMasterProfile = async (masterId) => {
+  return await prisma.masters.findUnique({
+    where: {
+      id: masterId,
+    },
+    select: {
+      id: true,
+      name: true,
+      intro: true,
+      master_image: true,
+      start_time: true,
+      end_time: true,
+      work_experience: true,
+      employee_number: true,
+      address: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      detailAddress: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      mastersCategories: {
+        select: {
+          id: true,
+          is_main: true,
+          lessonCategories: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      reviews: {
+        select: {
+          id: true,
+          grade: true,
+          comment: true,
+          users: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+};
+
+const setMasterProfile = async (params) => {
+  const { type, value, user } = params;
+
+  return await prisma.$queryRaw`
+  UPDATE masters t SET t.${type} = ${value} WHERE t.id = ${user.id}
+  `;
+};
 module.exports = {
-  sendLessonCat,
+  findMasterInfo,
   createMaster,
   insertMasterCat,
   findMasterAddress,
   insertMasterAddress,
+  getMasterProfile,
+  setMasterProfile,
 };

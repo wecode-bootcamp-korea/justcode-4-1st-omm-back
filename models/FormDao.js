@@ -2,10 +2,10 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const getQuestionsByLessonId = async (lessonId) => {
+const getQuestions = async (lessonId) => {
   return await prisma.questions.findMany({
     where: {
-      lesson_category_id: lessonId,
+      lesson_category_id: Number(lessonId),
     },
     select: {
       id: true,
@@ -21,4 +21,13 @@ const getQuestionsByLessonId = async (lessonId) => {
   });
 };
 
-module.exports = { getQuestionsByLessonId };
+const postQuestion = async (question) =>{
+  console.log(question);
+  return  await prisma.$queryRaw`
+  INSERT INTO request_form (user_id, lesson_category_id, question_id, choice_question_id)
+  VALUES
+  (${question.user_id}, ${question.lesson_category_id}, ${question.question_id},${question.choice_question_id});
+`
+}
+
+module.exports = { getQuestions, postQuestion };
