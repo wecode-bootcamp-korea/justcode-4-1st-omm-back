@@ -56,5 +56,8 @@ const signup = async (name, email, password) => {
 
   return newUser;
 };
+const getUserByUserId = async (userId) => {
+  return await UserDao.getUserByUserId(userId);
+};
 
-module.exports = { sendLogIn, signup };
+module.exports = { sendLogIn, signup, getUserByUserId };

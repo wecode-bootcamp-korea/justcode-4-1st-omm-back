@@ -57,6 +57,17 @@ const createUser = async (name, email, encryptedPW) => {
   });
 };
 
+const getUserByUserId = async (userId) => {
+  return await prisma.users.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      id: true,
+    },
+  });
+};
+
 module.exports = {
   findUserInfo,
   insertPhoneNum,
@@ -64,4 +75,5 @@ module.exports = {
   sendLogIn,
   getUserByEmail,
   createUser,
+  getUserByUserId
 };
