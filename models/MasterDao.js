@@ -2,28 +2,128 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const getMasters = async () => {
-  return await prisma.masters.findMany({
-    select: {
-      id: true,
-      name: true,
-      intro: true,
-      master_image: true,
-      reviews: {
-        select: {
-          id: true,
-          comment: true,
-          grade: true,
-          users: {
-            select: {
-              id: true,
-              name: true,
+const getMasters = async (params) => {
+  console.log("params >> ", params);
+  const { addressId, lessonId } = params;
+
+  let data = {};
+  if (addressId !== "null" && lessonId !== "null") {
+    data = {
+      where: {
+        detailAddress: {
+          id: Number(addressId),
+        },
+        mastersCategories: {
+          some: {
+            lessonCategories: {
+              id: Number(lessonId),
             },
           },
         },
       },
-    },
-  });
+      select: {
+        id: true,
+        name: true,
+        intro: true,
+        master_image: true,
+        reviews: {
+          select: {
+            id: true,
+            comment: true,
+            grade: true,
+            users: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    };
+  } else if (addressId !== "null") {
+    data = {
+      where: {
+        detailAddress: {
+          id: Number(addressId),
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        intro: true,
+        master_image: true,
+        reviews: {
+          select: {
+            id: true,
+            comment: true,
+            grade: true,
+            users: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    };
+  } else if (lessonId !== "null") {
+    data = {
+      where: {
+        mastersCategories: {
+          some: {
+            lessonCategories: {
+              id: Number(lessonId),
+            },
+          },
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        intro: true,
+        master_image: true,
+        reviews: {
+          select: {
+            id: true,
+            comment: true,
+            grade: true,
+            users: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    };
+    return await prisma.masters.findMany({});
+  } else {
+    data = {
+      select: {
+        id: true,
+        name: true,
+        intro: true,
+        master_image: true,
+        reviews: {
+          select: {
+            id: true,
+            comment: true,
+            grade: true,
+            users: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    };
+  }
+  return await prisma.masters.findMany(data);
 };
 
 const findMasterInfo = async (userID) => {

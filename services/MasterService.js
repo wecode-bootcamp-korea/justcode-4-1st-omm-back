@@ -5,8 +5,8 @@ const errorGenerator = require("../utils/errorGenerator");
 const MasterDao = require("../models/MasterDao");
 const UserDao = require("../models/UserDao");
 
-const sendMasters = async () => {
-  return await MasterDao.getMasters();
+const sendMasters = async (params) => {
+  return await MasterDao.getMasters(params);
 };
 
 const signUp = async (
