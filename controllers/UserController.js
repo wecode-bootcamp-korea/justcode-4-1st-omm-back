@@ -4,7 +4,6 @@ const errorGenerator = require("../utils/errorGenerator");
 const sendLogIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("userController email, password : ", email, password);
     const token = await UserService.sendLogIn(email, password);
     return res.status(200).json({ access_token: token });
   } catch (err) {
