@@ -62,9 +62,6 @@ const getUserByUserId = async (userId) => {
     where: {
       id: userId,
     },
-    select: {
-      id: true,
-    },
   });
 };
 
@@ -75,5 +72,5 @@ module.exports = {
   sendLogIn,
   getUserByEmail,
   createUser,
-  getUserByUserId
+  getUserByUserId,
 };
