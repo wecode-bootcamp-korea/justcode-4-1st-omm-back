@@ -1,3 +1,6 @@
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
+
 const findUserInfo = async (inputEmail, inputPhone) => {
   return await prisma.$queryRaw`
     SELECT id, name, email, user_image AS userImg, phone_number AS phoneNumber, is_deleted AS isDeleted 
