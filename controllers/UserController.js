@@ -31,4 +31,10 @@ const signup = async (req, res) => {
   }
 };
 
-module.exports = { sendLogIn, signup };
+const getUser = async (req, res) => {
+  return res.status(201).json({
+    message: "SUCCESS",
+    user: req.user,
+  });
+};
+module.exports = { sendLogIn, signup, getUser };
