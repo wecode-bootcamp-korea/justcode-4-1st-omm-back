@@ -1,8 +1,8 @@
 const MasterService = require("../services/MasterService");
 const errorGenerator = require("../utils/errorGenerator");
-const jwt = require("jsonwebtoken");
-const UserService = require("../services/UserService");
-const { SECRET_KEY } = process.env;
+// const jwt = require("jsonwebtoken");
+// const UserService = require("../services/UserService");
+// const { SECRET_KEY } = process.env;
 
 const sendMasters = async (req, res) => {
   try {
@@ -109,7 +109,6 @@ const setMasterProfile = async (req, res, next) => {
 
 const getMastersByCategory = async (req, res, next) => {
   try {
-
     const { category } = req.params;
 
     const getMasters = await MasterService.getMastersByCategory(category);

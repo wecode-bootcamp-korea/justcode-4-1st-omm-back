@@ -7,8 +7,8 @@ const AddressDao = require("../models/AddressDao");
 const MasterDao = require("../models/MasterDao");
 const UserDao = require("../models/UserDao");
 
-const sendMasters = async (params) => {
-  return await MasterDao.getMasters(params);
+const sendMasters = async (search) => {
+  return await MasterDao.getMasters(search);
 };
 
 const signUp = async (

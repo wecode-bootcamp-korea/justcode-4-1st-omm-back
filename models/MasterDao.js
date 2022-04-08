@@ -2,8 +2,8 @@ const { PrismaClient } = require("@prisma/client");
 
 const prisma = new PrismaClient();
 
-const getMasters = async (params) => {
-  const { addressId, lessonId, take } = params;
+const getMasters = async (search) => {
+  const { addressId, lessonId, take } = search;
   let data = {};
   data = {
     take: Number(take),
@@ -192,12 +192,12 @@ const getMasterByUserId = async (userId) => {
 
 const getMastersByCategory = async (category) => {
   return await prisma.$queryRaw`
-  SELECT m.name as goso_name, m.master_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
+  SELECT m.id as goso_id, m.name as goso_name, m.master_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
   FROM masters_categories
   LEFT JOIN masters m ON m.id = masters_categories.master_id
   LEFT JOIN reviews r ON r.master_id = masters_categories.master_id
   WHERE masters_categories.lesson_category_id=${category}
-  GROUP BY m.name,m.master_image, m.work_experience, r.grade;
+  GROUP BY m.id,m.name,m.master_image, m.work_experience, r.grade;
   `;
 };
 
