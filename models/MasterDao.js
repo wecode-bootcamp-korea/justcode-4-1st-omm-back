@@ -187,9 +187,6 @@ const getMasterByUserId = async (userId) => {
     where: {
       user_id: userId,
     },
-    select: {
-      id: true,
-    },
   });
 };
 
