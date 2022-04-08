@@ -1,19 +1,21 @@
 const jwt = require("jsonwebtoken");
 const errorGenerator = require("../utils/errorGenerator");
+const MasterService = require("../services/MasterService");
 const UserService = require("../services/UserService");
 const { SECRET_KEY } = process.env;
 
-const userValidateToken = async (req, res, next) => {
+const validateToken = async (req, res, next) => {
   try {
     const { token } = req.headers;
-    if (!token || token === "null" || token === undefined) {
+
+    if (!token || token === 'null' || token === undefined) {
       throw await errorGenerator({
         statusCode: 400,
         message: "TOKEN_UNDEFINED",
       });
     }
-
     const { id } = jwt.verify(token, SECRET_KEY);
+
     if (!id) {
       throw await errorGenerator({
         statusCode: 400,
@@ -21,15 +23,15 @@ const userValidateToken = async (req, res, next) => {
       });
     }
 
-    const findUser = await UserService.getUserByUserId(id);
+    const findMaster = await MasterService.getMasterByUserId(id);
 
-    if (!findUser) {
+    if (!findMaster) {
       throw await errorGenerator({
         statusCode: 404,
         message: "USER_NOT_FOUND",
       });
     }
-    req.user = findUser;
+    req.master = findMaster;
 
     next();
   } catch (err) {
@@ -37,4 +39,4 @@ const userValidateToken = async (req, res, next) => {
   }
 };
 
-module.exports = userValidateToken;
+module.exports = validateToken;
