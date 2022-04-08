@@ -91,7 +91,7 @@ const insertMasterCat = async (masterID, lessonCatID) => {
     await prisma.$queryRaw`
         INSERT INTO masters_categories (master_id, lesson_category_id, is_main)
         VALUES
-        (${masterID}, ${Number(catID)}, false);
+        (${masterID}, ${Number(catID)}, true);
     `;
   });
 };
@@ -169,7 +169,7 @@ const sendMasterDetail = async (id) => {
   const masterDetail = await prisma.$queryRaw`
   select id, name, intro, start_time, end_time, work_experience, employee_number
   from masters
-  where id=${id}
+  where id=${id};
   `;
   return masterDetail;
 };
@@ -178,7 +178,7 @@ const setMasterProfile = async (params) => {
   const { type, value, user } = params;
 
   return await prisma.$queryRaw`
-  UPDATE masters t SET t.${type} = ${value} WHERE t.id = ${user.id}
+  UPDATE masters t SET t.${type} = ${value} WHERE t.id = ${user.id};
   `;
 };
 
@@ -197,9 +197,16 @@ const getMastersByCategory = async (category) => {
   LEFT JOIN masters m ON m.id = masters_categories.master_id
   LEFT JOIN reviews r ON r.master_id = masters_categories.master_id
   WHERE masters_categories.lesson_category_id=${category}
-  GROUP BY m.name,m.master_image, m.work_experience, r.grade
+  GROUP BY m.name,m.master_image, m.work_experience, r.grade;
   `;
 };
+
+const isMaster = async (masterID) => {
+  return await prisma.$queryRaw`
+    SELECT id, name FROM masters WHERE id = ${masterID};
+  `;
+};
+
 module.exports = {
   getMasters,
   findMasterInfo,
@@ -211,4 +218,5 @@ module.exports = {
   setMasterProfile,
   getMasterByUserId,
   getMastersByCategory,
+  isMaster,
 };

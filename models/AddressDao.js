@@ -21,10 +21,10 @@ const getAddress = async () => {
 const sendMasterAddress = async (id) => {
   return await prisma.$queryRaw`
   select a.name as address, d.name as detail_address
-  from address a, detail_address d, masters_address ma 
-  where ma.master_id = ${id}
-  and ma.address_id = a.id
-  and ma.detail_address_id = d.id
+  from address a, detail_address d, masters m 
+  where m.id = ${id}
+  and m.address_id = a.id
+  and m.detail_address_id = d.id;
   `;
 };
 
