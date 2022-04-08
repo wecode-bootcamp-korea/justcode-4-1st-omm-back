@@ -9,11 +9,12 @@ const masterValidateToken = require("../middleware/masterValidateToken");
 router.get("/profile", masterValidateToken, MasterController.getMasterProfile);
 router.get("/list", MasterController.sendMasters);
 router.get("/main_list/:category", MasterController.getMastersByCategory);
-
-// PUT
-router.put("/profile", MasterController.setMasterProfile);
+router.get("/users/:id", MasterController.sendMasterDetail);
 
 // POST
 router.post("/signup", MasterController.signUp);
+
+// PUT
+router.put("/profile", MasterController.setMasterProfile);
 
 module.exports = router;

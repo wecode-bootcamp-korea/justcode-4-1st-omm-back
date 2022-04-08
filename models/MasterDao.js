@@ -165,6 +165,15 @@ const getMasterProfile = async (masterId) => {
   });
 };
 
+const sendMasterDetail = async (id) => {
+  const masterDetail = await prisma.$queryRaw`
+  select id, name, intro, start_time, end_time, work_experience, employee_number
+  from masters
+  where id=${id}
+  `;
+  return masterDetail;
+};
+
 const setMasterProfile = async (params) => {
   const { type, value, user } = params;
 
@@ -197,6 +206,7 @@ module.exports = {
   createMaster,
   insertMasterCat,
   findMasterAddress,
+  sendMasterDetail,
   getMasterProfile,
   setMasterProfile,
   getMasterByUserId,
