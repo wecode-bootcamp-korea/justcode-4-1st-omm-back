@@ -91,7 +91,7 @@ const insertMasterCat = async (masterID, lessonCatID) => {
     await prisma.$queryRaw`
         INSERT INTO masters_categories (master_id, lesson_category_id, is_main)
         VALUES
-        (${masterID}, ${Number(catID)}, false);
+        (${masterID}, ${Number(catID)}, true);
     `;
   });
 };
