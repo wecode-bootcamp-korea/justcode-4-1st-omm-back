@@ -1,40 +1,68 @@
-const masterService = require("../services/MasterService");
+const MasterService = require("../services/MasterService");
 const errorGenerator = require("../utils/errorGenerator");
+
+const sendMasters = async (req, res) => {
+  try {
+    const search = req.query;
+    const masters = await MasterService.sendMasters(search);
+    return res.status(200).json(masters);
+  } catch (err) {
+    return res.status(500).json({ message: "SERVER_ERROR" });
+  }
+};
 
 const signUp = async (req, res, next) => {
   try {
+    const { Authorization } = req.headers;
+
     const {
       name,
       email,
       password,
       phoneNumber,
-      userID,
       lessonCatID,
-      adress,
-      detailAdress,
+      address,
+      detailAddress,
     } = req.body;
 
-    if (
-      !name ||
-      !email ||
-      !password ||
-      !phoneNumber ||
-      !lessonCatID ||
-      !adress ||
-      !detailAdress
-    ) {
-      throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
+    if (typeof Authorization === "undefined") {
+      if (
+        !name ||
+        typeof name !== "string" ||
+        !email ||
+        typeof email !== "string" ||
+        !password ||
+        typeof password !== "string" ||
+        !phoneNumber ||
+        !lessonCatID ||
+        typeof lessonCatID !== "object" ||
+        !address ||
+        !detailAddress
+      ) {
+        throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
+      }
+    } else {
+      if (
+        typeof password !== "string" ||
+        !phoneNumber ||
+        !lessonCatID ||
+        typeof lessonCatID !== "object" ||
+        !address ||
+        !detailAddress
+      ) {
+        throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
+      }
     }
 
-    const newMaster = await masterService.signUp(
+    const newMaster = await MasterService.signUp(
       name,
       email,
       password,
       phoneNumber,
-      userID,
+      Authorization,
       lessonCatID,
-      adress,
-      detailAdress
+      address,
+      detailAddress
     );
 
     return res.status(201).json({
@@ -43,7 +71,48 @@ const signUp = async (req, res, next) => {
       userID: newMaster.user_id,
     });
   } catch (error) {
-    return res.status(error.statusCode).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const getMasterProfile = async (req, res, next) => {
+  try {
+    const { id } = req.master;
+    const master = await MasterService.getMasterProfile(Number(id));
+    return res.status(201).json({
+      message: "SUCCESS",
+      master,
+    });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+};
+
+const setMasterProfile = async (req, res, next) => {
+  try {
+    const { type, value, user } = req.body;
+    // const { user } = req;
+    if (!type || !value || !user) {
+      throw await errorGenerator({
+        statusCode: 400,
+        message: "KEY_ERROR",
+      });
+    }
+    await MasterService.setMasterProfile({ type, value, user });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
+  }
+};
+
+const getMastersByCategory = async (req, res, next) => {
+  try {
+    const {category}  = req.params;
+
+    const getMasters = await MasterService.getMastersByCategory(category);
+
+    return res.status(200).json({ message: "SUCCESS",getMasters });
+  } catch (error) {
+    return res.status(error.statusCode || 500).json({ message: error.message });
   }
 };
 
@@ -57,4 +126,4 @@ const sendMasterDetail = async (req, res) => {
   }
 };
 
-module.exports = { signUp, sendMasterDetail };
+module.exports = { sendMasters, signUp, getMasterProfile, setMasterProfile, getMastersByCategory,sendMasterDetail };

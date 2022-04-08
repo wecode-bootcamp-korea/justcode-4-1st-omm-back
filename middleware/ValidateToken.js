@@ -1,16 +1,20 @@
 const jwt = require("jsonwebtoken");
 
 const ValidateToken = async (req, res, next) => {
-  const { Autorization } = req.headers;
+  const { authorization } = req.headers;
+
+  if(authorization === undefined){
+    return res.status(403).json({ message: "로그인이 필요합니다." });
+  }
   const decodeToken = new Promise((resolve, reject) => {
-    jwt.verify(Autorization, env.process.SECRET_KEY, (err, decoded) => {
+    jwt.verify(authorization, process.env.SECRET_KEY, (err, decoded) => {
       if (err) reject(err);
       else resolve(decoded);
     });
   });
 
-  if (!Autorization) {
-    return res.statis(403).json({ message: "로그인이 필요합니다." });
+  if (!authorization) {
+    return res.status(403).json({ message: "로그인이 필요합니다." });
   }
 
   decodeToken
@@ -21,6 +25,7 @@ const ValidateToken = async (req, res, next) => {
         .json({ success: false, message: err.message, result: "WRONG_TOKEN" })
     );
 
+ decodeToken;
   next();
 };
 

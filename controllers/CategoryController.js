@@ -15,7 +15,7 @@ const sendLessonCat = async (req, res, next) => {
   try {
     const id = req.params.id;
 
-    if (id) {
+    if (!id) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
     const lessonCat = await CategoryService.sendLessonCat(id);

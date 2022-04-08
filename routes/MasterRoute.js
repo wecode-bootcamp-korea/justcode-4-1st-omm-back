@@ -1,9 +1,19 @@
 const express = require("express");
 const router = express.Router();
 
-const masterController = require("../controllers/MasterController");
+const MasterController = require("../controllers/MasterController");
+const masterVaildateToken = require("../middleware/masterVaildateToken");
 
-router.post("/signup", masterController.signUp);
-router.get("/users/:id", masterController.sendMasterDetail);
+// GET
+router.get("/profile", masterVaildateToken, MasterController.getMasterProfile);
+router.get("/list", MasterController.sendMasters);
+router.get("/main_list/:category", MasterController.getMastersByCategory);
+router.get("/users/:id", MasterController.sendMasterDetail);
+
+// POST
+router.post("/signup", MasterController.signUp);
+
+// PUT
+router.put("/profile", MasterController.setMasterProfile);
 
 module.exports = router;
