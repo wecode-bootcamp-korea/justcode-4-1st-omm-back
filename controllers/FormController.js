@@ -14,7 +14,7 @@ const getQuestions = async (req, res, next) => {
       });
     }
     const { id } = jwt.verify(token, SECRET_KEY);
-    console.log("hey");
+
     if (!id) {
       throw await errorGenerator({
         statusCode: 400,
@@ -43,6 +43,12 @@ const postQuestions = async (req, res, next) => {
   try {
     const questionForm = req.body;
     
+    console.log("aaaa", questionForm[0].user_id);
+    const { id } = jwt.verify(questionForm[0].user_id, SECRET_KEY);
+    console.log("dd :", id);
+    for(let i=0; i<questionForm.length; i++){
+      questionForm[i].user_id = id;
+    }
     const ret = await FormService.postQuestions(questionForm);
 
     return res.status(200).json({ message: "SUCCESS"});

@@ -2,10 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 const MasterController = require("../controllers/MasterController");
-const masterVaildateToken = require("../middleware/masterVaildateToken");
+
+const masterValidateToken = require("../middleware/masterValidateToken");
 
 // GET
-router.get("/profile", masterVaildateToken, MasterController.getMasterProfile);
+router.get("/profile", masterValidateToken, MasterController.getMasterProfile);
 router.get("/list", MasterController.sendMasters);
 router.get("/main_list/:category", MasterController.getMastersByCategory);
 router.get("/users/:id", MasterController.sendMasterDetail);
