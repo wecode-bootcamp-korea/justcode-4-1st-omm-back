@@ -32,4 +32,14 @@ const sendLessonCat = async (id) => {
   }
 };
 
-module.exports = { getCategory, sendLessonCat };
+const sendMasterCategory = async (id) => {
+  return await prisma.$queryRaw`
+  select JSON_ARRAYAGG(lc.name) as lesson_categories
+  from lesson_categories lc, masters_categories mc
+  where mc.master_id = ${id}
+  and mc.lesson_category_id = lc.id
+  group by mc.master_id
+  `;
+};
+
+module.exports = { getCategory, sendLessonCat, sendMasterCategory };

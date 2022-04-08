@@ -2,6 +2,8 @@ const bc = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const errorGenerator = require("../utils/errorGenerator");
 
+const CategoryDao = require("../models/CategoryDao");
+const AddressDao = require("../models/AddressDao");
 const MasterDao = require("../models/MasterDao");
 const UserDao = require("../models/UserDao");
 
@@ -124,6 +126,24 @@ const getMastersByCategory = async (category) => {
   return await MasterDao.getMastersByCategory(category);
 };
 
+const sendMasterDetail = async (id) => {
+  const masterDetail = await MasterDao.sendMasterDetail(id);
+  if (masterDetail.length === 0) {
+    throw await errorGenerator({
+      statusCode: 404,
+      message: "존재하지 않는 사용자입니다.",
+    });
+  }
+
+  const masterDetailAddress = await AddressDao.sendMasterAddress(id);
+  const masterDetailCategory = await CategoryDao.sendMasterCategory(id);
+  const masterDetailAll = masterDetail[0];
+  masterDetailAll.lesson_categories = masterDetailCategory[0].lesson_categories;
+  masterDetailAll.address = masterDetailAddress[0].address;
+  masterDetailAll.detail_address = masterDetailAddress[0].detail_address;
+  return masterDetailAll;
+};
+
 module.exports = {
   signUp,
   sendMasters,
@@ -131,4 +151,5 @@ module.exports = {
   setMasterProfile,
   getMasterByUserId,
   getMastersByCategory,
+  sendMasterDetail,
 };

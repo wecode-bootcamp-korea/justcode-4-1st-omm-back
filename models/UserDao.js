@@ -59,9 +59,6 @@ const getUserByUserId = async (userId) => {
     where: {
       id: userId,
     },
-    select: {
-      id: true,
-    },
   });
 };
 

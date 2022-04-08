@@ -165,6 +165,15 @@ const getMasterProfile = async (masterId) => {
   });
 };
 
+const sendMasterDetail = async (id) => {
+  const masterDetail = await prisma.$queryRaw`
+  select id, name, intro, start_time, end_time, work_experience, employee_number
+  from masters
+  where id=${id}
+  `;
+  return masterDetail;
+};
+
 const setMasterProfile = async (params) => {
   const { type, value, user } = params;
 
@@ -178,13 +187,10 @@ const getMasterByUserId = async (userId) => {
     where: {
       user_id: userId,
     },
-    select: {
-      id: true,
-    },
   });
 };
 
-const getMastersByCategory = async (category) =>{
+const getMastersByCategory = async (category) => {
   return await prisma.$queryRaw`
   SELECT m.name as goso_name, m.master_image as image, m.work_experience as recurit, r.grade as star, COUNT(r.id) as review_sum
   FROM masters_categories
@@ -200,8 +206,9 @@ module.exports = {
   createMaster,
   insertMasterCat,
   findMasterAddress,
+  sendMasterDetail,
   getMasterProfile,
   setMasterProfile,
   getMasterByUserId,
-  getMastersByCategory
+  getMastersByCategory,
 };

@@ -156,11 +156,11 @@ model MastersCategories {
 
   masters Masters @relation(fields: [master_id], references: [id])
 
+  LessonCategories   LessonCategories? @relation(fields: [lessonCategoriesId], references: [id])
+  lessonCategoriesId Int?
   @@index([master_id], name: "master_id")
   @@index([request_form_id], name: "request_form_id")
   @@map("masters_categories")
-  LessonCategories   LessonCategories? @relation(fields: [lessonCategoriesId], references: [id])
-  lessonCategoriesId Int?
 }
 
 model Address {
