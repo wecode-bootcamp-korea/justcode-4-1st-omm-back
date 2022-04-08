@@ -6,7 +6,9 @@ const { SECRET_KEY } = process.env;
 const userValidateToken = async (req, res, next) => {
   try {
     const { token } = req.headers;
+
     if (!token || token === "null" || token === undefined) {
+      
       throw await errorGenerator({
         statusCode: 400,
         message: "TOKEN_UNDEFINED",
@@ -14,7 +16,6 @@ const userValidateToken = async (req, res, next) => {
     }
 
     const { id } = jwt.verify(token, SECRET_KEY);
-
     if (!id) {
       throw await errorGenerator({
         statusCode: 400,

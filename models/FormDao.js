@@ -21,9 +21,10 @@ const getQuestions = async (lessonId) => {
   });
 };
 
-const getLessonCategoryId = async (lessonId) =>{
+const getLessonCategoryId = async (lessonId, user_id) =>{
+  console.log(user_id);
   return  await prisma.$queryRaw`
-  SELECT id FROM request_form WHERE lesson_category_id = ${lessonId};
+  SELECT id FROM request_form WHERE lesson_category_id = ${lessonId} and user_id=${user_id};
   `
 };
 
