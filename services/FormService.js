@@ -5,8 +5,8 @@ const getQuestions = async (lessonId) => {
   return await FormDao.getQuestions(lessonId);
 };
 
-const getLessonCategoryId = async (lessonId) =>{
-  return await FormDao.getLessonCategoryId(lessonId);
+const getLessonCategoryId = async (lessonId, user_id) =>{
+  return await FormDao.getLessonCategoryId(lessonId, user_id);
 }
 
 const postQuestions = async (questionForm) =>{
