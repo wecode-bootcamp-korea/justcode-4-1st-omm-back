@@ -6,11 +6,7 @@ const { SECRET_KEY } = process.env;
 const userValidateToken = async (req, res, next) => {
   try {
     const { token } = req.headers;
-<<<<<<< HEAD
-    if (!token || token === 'null' || token === undefined) {
-=======
     if (!token || token === "null" || token === undefined) {
->>>>>>> 4510b230f238ed65bd0d1f41f577aa15617baddb
       throw await errorGenerator({
         statusCode: 400,
         message: "TOKEN_UNDEFINED",
