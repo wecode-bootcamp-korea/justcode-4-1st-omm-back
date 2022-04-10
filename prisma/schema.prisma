@@ -32,6 +32,7 @@ model Masters {
   detail_address_id Int
   name              String
   intro             String?
+  master_image      String?
   start_time        String?
   end_time          String?
   work_experience   Int?
@@ -185,7 +186,7 @@ model MastersCategories {
 model MasterPosts {
   id                        Int       @id @default(autoincrement())
   master_id                 Int
-  master_image              String
+  image                     String
   created_at DateTime?      @default(now())
   updated_at DateTime?      @default(now())
 
