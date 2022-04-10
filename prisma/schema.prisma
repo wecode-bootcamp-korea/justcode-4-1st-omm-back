@@ -71,7 +71,7 @@ model LessonCategories {
   created_at        DateTime? @default(now())
   updated_at        DateTime? @default(now())
 
-  theme_categories themeCategories @relation(fields: [theme_category_id], references: [id])
+  theme_categories ThemeCategories @relation(fields: [theme_category_id], references: [id])
 
   questions         Questions[]
   requestForm       RequestForm[]
