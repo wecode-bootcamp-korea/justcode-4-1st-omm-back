@@ -3,7 +3,7 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 const getCategory = async () => {
-  return await prisma.themaCategories.findMany({
+  return await prisma.themeCategories.findMany({
     select: {
       id: true,
       name: true,
@@ -23,8 +23,8 @@ const sendLessonCat = async (id) => {
     return await prisma.$queryRaw`
         SELECT lc.id, lc.name 
         FROM lesson_categories lc
-        JOIN thema_categories tc
-        ON lc.thema_category_id = tc.id
+        JOIN theme_categories tc
+        ON lc.theme_category_id = tc.id
         WHERE tc.id = ${id};
         `;
   } catch (error) {
