@@ -53,30 +53,30 @@ model Masters {
   @@map("masters")
 }
 
-model ThemaCategories {
+model themeCategories {
   id         Int       @id @default(autoincrement())
   name       String
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 
   lessonCategories LessonCategories[]
-  @@map("thema_categories")
+  @@map("theme_categories")
 }
 
 model LessonCategories {
   id                Int       @id @default(autoincrement())
-  thema_category_id Int
+  theme_category_id Int
   name              String
   image             String?
   created_at        DateTime? @default(now())
   updated_at        DateTime? @default(now())
 
-  thema_categories ThemaCategories @relation(fields: [thema_category_id], references: [id])
+  theme_categories themeCategories @relation(fields: [theme_category_id], references: [id])
 
   questions         Questions[]
   requestForm       RequestForm[]
   mastersCategories MastersCategories[]
-  @@index([thema_category_id], name: "thema_category_id")
+  @@index([theme_category_id], name: "theme_category_id")
   @@map("lesson_categories")
 }
 
