@@ -184,8 +184,8 @@ model MastersCategories {
 
 model MasterPosts {
   id                        Int       @id @default(autoincrement())
-  master_id           Int
-  master_image_address      String
+  master_id                 Int
+  master_image              String
   created_at DateTime?      @default(now())
   updated_at DateTime?      @default(now())
 
