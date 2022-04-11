@@ -1,42 +1,20 @@
 const FormService = require("../services/FormService");
 const errorGenerator = require("../utils/errorGenerator");
-const jwt = require("jsonwebtoken");
-const UserService = require("../services/UserService");
-const { SECRET_KEY } = process.env;
 
 const getQuestions = async (req, res, next) => {
   try {
-    const { token } = req.headers;
-    if (!token || token === "null" || token === undefined) {
-      throw await errorGenerator({
-        statusCode: 400,
-        message: "TOKEN_UNDEFINED",
-      });
-    }
-    const { id } = jwt.verify(token, SECRET_KEY);
-    if (!id) {
-      throw await errorGenerator({
-        statusCode: 400,
-        message: "INCORRECT_TOKEN",
-      });
-    }
-    const findUser = await UserService.getUserByUserId(id);
-    const { lessonId } = req.params;
+    const { lessonId, userId } = req.params;
     if (!lessonId) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
-    const checkId = await FormService.getLessonCategoryId(
-      lessonId,
-      findUser.id
-    );
-    if (checkId.length !== 0) {
-      throw await errorGenerator({
-        statusCode: 400,
-        message: "LESSON ALEADY EXIST",
-      });
-    }
+
     const questions = await FormService.getQuestions(lessonId);
-    console.log(questions);
+
+    const checkId = await FormService.getLessonCategoryId(lessonId, userId);
+    if(checkId.length !== 0){
+      return res.status(200).json({ message: "LESSON ALEADY EXIST", questions });
+      //throw await errorGenerator({ statusCode: 400, message: "LESSON ALEADY EXIST", questions });
+    }
 
     return res.status(200).json({ message: "SUCCESS", questions });
   } catch (err) {
@@ -47,13 +25,6 @@ const getQuestions = async (req, res, next) => {
 const postQuestions = async (req, res, next) => {
   try {
     const questionForm = req.body;
-
-    console.log("aaaa", questionForm[0].user_id);
-    const { id } = jwt.verify(questionForm[0].user_id, SECRET_KEY);
-    console.log("dd :", id);
-    for (let i = 0; i < questionForm.length; i++) {
-      questionForm[i].user_id = id;
-    }
     const ret = await FormService.postQuestions(questionForm);
 
     return res.status(200).json({ message: "SUCCESS" });
