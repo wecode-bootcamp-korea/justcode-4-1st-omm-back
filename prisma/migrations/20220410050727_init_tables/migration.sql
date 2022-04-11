@@ -22,7 +22,6 @@ CREATE TABLE `masters` (
     `address_id` INTEGER NOT NULL,
     `detail_address_id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
-    `master_image` VARCHAR(191) NULL,
     `intro` VARCHAR(191) NULL,
     `start_time` VARCHAR(191) NULL,
     `end_time` VARCHAR(191) NULL,
@@ -39,7 +38,7 @@ CREATE TABLE `masters` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `thema_categories` (
+CREATE TABLE `theme_categories` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -51,13 +50,13 @@ CREATE TABLE `thema_categories` (
 -- CreateTable
 CREATE TABLE `lesson_categories` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `thema_category_id` INTEGER NOT NULL,
+    `theme_category_id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `image` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    INDEX `thema_category_id`(`thema_category_id`),
+    INDEX `theme_category_id`(`theme_category_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -120,6 +119,18 @@ CREATE TABLE `reviews` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `review_images` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `review_id` INTEGER NOT NULL,
+    `review_image` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `review_id`(`review_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `masters_categories` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `lesson_category_id` INTEGER NOT NULL,
@@ -130,6 +141,18 @@ CREATE TABLE `masters_categories` (
 
     INDEX `master_id`(`master_id`),
     INDEX `lesson_category_id`(`lesson_category_id`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `master_posts` (
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `master_id` INTEGER NOT NULL,
+    `master_image` VARCHAR(191) NOT NULL,
+    `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    INDEX `master_id`(`master_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -165,7 +188,7 @@ ALTER TABLE `masters` ADD CONSTRAINT `masters_address_id_fkey` FOREIGN KEY (`add
 ALTER TABLE `masters` ADD CONSTRAINT `masters_detail_address_id_fkey` FOREIGN KEY (`detail_address_id`) REFERENCES `detail_address`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `lesson_categories` ADD CONSTRAINT `lesson_categories_thema_category_id_fkey` FOREIGN KEY (`thema_category_id`) REFERENCES `thema_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `lesson_categories` ADD CONSTRAINT `lesson_categories_theme_category_id_fkey` FOREIGN KEY (`theme_category_id`) REFERENCES `theme_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `questions` ADD CONSTRAINT `questions_lesson_category_id_fkey` FOREIGN KEY (`lesson_category_id`) REFERENCES `lesson_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -192,10 +215,16 @@ ALTER TABLE `reviews` ADD CONSTRAINT `reviews_user_id_fkey` FOREIGN KEY (`user_i
 ALTER TABLE `reviews` ADD CONSTRAINT `reviews_master_id_fkey` FOREIGN KEY (`master_id`) REFERENCES `masters`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE `review_images` ADD CONSTRAINT `review_images_review_id_fkey` FOREIGN KEY (`review_id`) REFERENCES `reviews`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE `masters_categories` ADD CONSTRAINT `masters_categories_master_id_fkey` FOREIGN KEY (`master_id`) REFERENCES `masters`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `masters_categories` ADD CONSTRAINT `masters_categories_lesson_category_id_fkey` FOREIGN KEY (`lesson_category_id`) REFERENCES `lesson_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `master_posts` ADD CONSTRAINT `master_posts_master_id_fkey` FOREIGN KEY (`master_id`) REFERENCES `masters`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `detail_address` ADD CONSTRAINT `detail_address_address_id_fkey` FOREIGN KEY (`address_id`) REFERENCES `address`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

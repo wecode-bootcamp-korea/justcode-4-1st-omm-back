@@ -1,13 +1,13 @@
-const ReceiveService = require("../services/ReceiveService");
-const errorGenerator = require("../utils/errorGenerator");
 const jwt = require("jsonwebtoken");
+const errorGenerator = require("../utils/errorGenerator");
+const MasterService = require("../services/MasterService");
 const UserService = require("../services/UserService");
 const { SECRET_KEY } = process.env;
 
-const getReceive = async (req, res, next) => {
+const validateToken = async (req, res, next) => {
   try {
-    console.log("ddddddd");
     const { token } = req.headers;
+
     if (!token || token === 'null' || token === undefined) {
       throw await errorGenerator({
         statusCode: 400,
@@ -23,13 +23,20 @@ const getReceive = async (req, res, next) => {
       });
     }
 
-    const findUser = await UserService.getUserByUserId(id);
-    const questions = await ReceiveService.getReceive(findUser.id);
-    console.log("finsih");
-    return res.status(200).json({ message: "SUCCESS", questions });
+    const findMaster = await MasterService.getMasterByUserId(id);
+
+    if (!findMaster) {
+      throw await errorGenerator({
+        statusCode: 404,
+        message: "USER_NOT_FOUND",
+      });
+    }
+    req.master = findMaster;
+
+    next();
   } catch (err) {
-    res.status(err.statusCode || 500).json({ message: err.message });
+    return res.status(err.statusCode || 500).json({ message: err.message });
   }
 };
 
-module.exports = { getReceive };
+module.exports = validateToken;
