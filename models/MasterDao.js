@@ -86,7 +86,6 @@ const createMaster = async (userID, name, addressID, detailAddressID) => {
 };
 
 const insertMasterCat = async (masterID, lessonCatID) => {
-  console.log(lessonCatID);
   return lessonCatID.map(async (catID) => {
     await prisma.$queryRaw`
         INSERT INTO masters_categories (master_id, lesson_category_id, is_main)

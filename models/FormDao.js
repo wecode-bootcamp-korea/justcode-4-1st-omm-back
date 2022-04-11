@@ -21,19 +21,18 @@ const getQuestions = async (lessonId) => {
   });
 };
 
-const getLessonCategoryId = async (lessonId, user_id) =>{
-  console.log(user_id);
-  return  await prisma.$queryRaw`
+const getLessonCategoryId = async (lessonId, user_id) => {
+  return await prisma.$queryRaw`
   SELECT id FROM request_form WHERE lesson_category_id = ${lessonId} and user_id=${user_id};
-  `
+  `;
 };
 
-const postQuestion = async (question) =>{
-  return  await prisma.$queryRaw`
+const postQuestion = async (question) => {
+  return await prisma.$queryRaw`
   INSERT INTO request_form (user_id, lesson_category_id, question_id, choice_question_id)
   VALUES
   (${question.user_id}, ${question.lesson_category_id}, ${question.question_id},${question.choice_question_id});
-`
-}
+`;
+};
 
 module.exports = { getQuestions, postQuestion, getLessonCategoryId };
