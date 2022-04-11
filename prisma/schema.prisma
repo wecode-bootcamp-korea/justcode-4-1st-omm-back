@@ -31,8 +31,8 @@ model Masters {
   address_id        Int
   detail_address_id Int
   name              String
-  master_image      String?
   intro             String?
+  master_image      String?
   start_time        String?
   end_time          String?
   work_experience   Int?
@@ -48,6 +48,7 @@ model Masters {
 
   reviews           Reviews[]
   mastersCategories MastersCategories[]
+  master_posts      MasterPosts[]
 
   @@index([user_id], name: "user_id")
   @@map("masters")
@@ -60,7 +61,7 @@ model ThemaCategories {
   updated_at DateTime? @default(now())
 
   lessonCategories LessonCategories[]
-  @@map("thema_categories")
+  @@map("theme_categories")
 }
 
 model LessonCategories {
@@ -146,9 +147,24 @@ model Reviews {
   masters Masters @relation(fields: [master_id], references: [id])
   users   Users   @relation(fields: [user_id], references: [id])
 
+  review_images ReviewImages[]
+
   @@index([master_id], name: "master_id")
   @@index([user_id], name: "user_id")
   @@map("reviews")
+}
+
+model ReviewImages {
+  id         Int       @id @default(autoincrement())
+  review_id  Int
+  review_image         String
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+
+  reviews Reviews @relation(fields: [review_id], references: [id])
+
+  @@index([review_id], name: "review_id")
+  @@map("review_images")
 }
 
 model MastersCategories {
@@ -165,6 +181,19 @@ model MastersCategories {
   @@index([master_id], name: "master_id")
   @@index([lesson_category_id], name: "lesson_category_id")
   @@map("masters_categories")
+}
+
+model MasterPosts {
+  id                        Int       @id @default(autoincrement())
+  master_id                 Int
+  image                     String
+  created_at DateTime?      @default(now())
+  updated_at DateTime?      @default(now())
+
+  masters Masters @relation(fields: [master_id], references: [id])
+
+  @@index([master_id], name: "master_id")
+  @@map("master_posts")
 }
 
 model Address {

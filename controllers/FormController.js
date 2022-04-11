@@ -27,7 +27,7 @@ const postQuestions = async (req, res, next) => {
     const questionForm = req.body;
     const ret = await FormService.postQuestions(questionForm);
 
-    return res.status(200).json({ message: "SUCCESS"});
+    return res.status(200).json({ message: "SUCCESS" });
   } catch (err) {
     console.log(err);
     res.status(err.statusCode || 500).json({ message: err.message });
