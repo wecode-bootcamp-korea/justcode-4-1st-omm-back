@@ -61,7 +61,7 @@ model ThemaCategories {
   updated_at DateTime? @default(now())
 
   lessonCategories LessonCategories[]
-  @@map("theme_categories")
+  @@map("thema_categories")
 }
 
 model LessonCategories {
