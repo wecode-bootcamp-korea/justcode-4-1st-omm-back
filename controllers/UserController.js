@@ -4,8 +4,8 @@ const UserService = require("../services/UserService");
 const sendLogIn = async (req, res) => {
   try {
     const { email, password } = req.body;
-    const token = await UserService.sendLogIn(email, password);
-    return res.status(200).json({ access_token: token });
+    const {token, id} = await UserService.sendLogIn(email, password);
+    return res.status(200).json({ access_token: token, userId: id });
   } catch (err) {
     return res.status(err.statusCode || 500).json({ message: err.message });
   }

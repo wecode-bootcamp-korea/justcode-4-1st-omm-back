@@ -24,7 +24,8 @@ const sendLogIn = async (email, password) => {
     process.env.SECRET_KEY
   );
 
-  return token;
+  const userinfo = {'token':token, 'id':userDB[0].id};
+  return userinfo;
 };
 
 const signup = async (name, email, password) => {
