@@ -7,14 +7,13 @@ const { SECRET_KEY } = process.env;
 const getQuestions = async (req, res, next) => {
   try {
     const { token } = req.headers;
-    if (!token || token === 'null' || token === undefined) {
+    if (!token || token === "null" || token === undefined) {
       throw await errorGenerator({
         statusCode: 400,
         message: "TOKEN_UNDEFINED",
       });
     }
     const { id } = jwt.verify(token, SECRET_KEY);
-
     if (!id) {
       throw await errorGenerator({
         statusCode: 400,
@@ -26,9 +25,15 @@ const getQuestions = async (req, res, next) => {
     if (!lessonId) {
       throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
-    const checkId = await FormService.getLessonCategoryId(lessonId, findUser.id);
-    if(checkId.length !== 0){
-      throw await errorGenerator({ statusCode: 400, message: "LESSON ALEADY EXIST" });
+    const checkId = await FormService.getLessonCategoryId(
+      lessonId,
+      findUser.id
+    );
+    if (checkId.length !== 0) {
+      throw await errorGenerator({
+        statusCode: 400,
+        message: "LESSON ALEADY EXIST",
+      });
     }
     const questions = await FormService.getQuestions(lessonId);
     console.log(questions);
@@ -42,16 +47,16 @@ const getQuestions = async (req, res, next) => {
 const postQuestions = async (req, res, next) => {
   try {
     const questionForm = req.body;
-    
+
     console.log("aaaa", questionForm[0].user_id);
     const { id } = jwt.verify(questionForm[0].user_id, SECRET_KEY);
     console.log("dd :", id);
-    for(let i=0; i<questionForm.length; i++){
+    for (let i = 0; i < questionForm.length; i++) {
       questionForm[i].user_id = id;
     }
     const ret = await FormService.postQuestions(questionForm);
 
-    return res.status(200).json({ message: "SUCCESS"});
+    return res.status(200).json({ message: "SUCCESS" });
   } catch (err) {
     console.log(err);
     res.status(err.statusCode || 500).json({ message: err.message });
