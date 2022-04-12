@@ -53,7 +53,7 @@ const signUpDirect = async (req, res, next) => {
 
     return res.status(201).json({ message: "SIGNUP_SUCCESS" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "SERVER_ERROR" });
   }
 };
 
@@ -92,7 +92,7 @@ const signUp = async (req, res, next) => {
 
     return res.status(201).json({ message: "SIGNUP_SUCCESS" });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "SERVER_ERROR" });
   }
 };
 
