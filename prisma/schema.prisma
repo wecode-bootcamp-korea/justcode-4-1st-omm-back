@@ -31,8 +31,8 @@ model Masters {
   address_id        Int
   detail_address_id Int
   name              String
-  intro             String?
   master_image      String?
+  intro             String?
   start_time        String?
   end_time          String?
   work_experience   Int?
@@ -61,7 +61,7 @@ model ThemaCategories {
   updated_at DateTime? @default(now())
 
   lessonCategories LessonCategories[]
-  @@map("theme_categories")
+  @@map("thema_categories")
 }
 
 model LessonCategories {
@@ -186,7 +186,7 @@ model MastersCategories {
 model MasterPosts {
   id                        Int       @id @default(autoincrement())
   master_id                 Int
-  image                     String
+  posted_image              String
   created_at DateTime?      @default(now())
   updated_at DateTime?      @default(now())
 

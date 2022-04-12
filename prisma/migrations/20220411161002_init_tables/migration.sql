@@ -22,6 +22,7 @@ CREATE TABLE `masters` (
     `address_id` INTEGER NOT NULL,
     `detail_address_id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
+    `master_image` VARCHAR(191) NULL,
     `intro` VARCHAR(191) NULL,
     `start_time` VARCHAR(191) NULL,
     `end_time` VARCHAR(191) NULL,
@@ -38,7 +39,7 @@ CREATE TABLE `masters` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
-CREATE TABLE `theme_categories` (
+CREATE TABLE `thema_categories` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `name` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -50,13 +51,13 @@ CREATE TABLE `theme_categories` (
 -- CreateTable
 CREATE TABLE `lesson_categories` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `theme_category_id` INTEGER NOT NULL,
+    `thema_category_id` INTEGER NOT NULL,
     `name` VARCHAR(191) NOT NULL,
     `image` VARCHAR(191) NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
-    INDEX `theme_category_id`(`theme_category_id`),
+    INDEX `thema_category_id`(`thema_category_id`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -148,7 +149,7 @@ CREATE TABLE `masters_categories` (
 CREATE TABLE `master_posts` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `master_id` INTEGER NOT NULL,
-    `master_image` VARCHAR(191) NOT NULL,
+    `posted_image` VARCHAR(191) NOT NULL,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -188,7 +189,7 @@ ALTER TABLE `masters` ADD CONSTRAINT `masters_address_id_fkey` FOREIGN KEY (`add
 ALTER TABLE `masters` ADD CONSTRAINT `masters_detail_address_id_fkey` FOREIGN KEY (`detail_address_id`) REFERENCES `detail_address`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `lesson_categories` ADD CONSTRAINT `lesson_categories_theme_category_id_fkey` FOREIGN KEY (`theme_category_id`) REFERENCES `theme_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `lesson_categories` ADD CONSTRAINT `lesson_categories_thema_category_id_fkey` FOREIGN KEY (`thema_category_id`) REFERENCES `thema_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `questions` ADD CONSTRAINT `questions_lesson_category_id_fkey` FOREIGN KEY (`lesson_category_id`) REFERENCES `lesson_categories`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
