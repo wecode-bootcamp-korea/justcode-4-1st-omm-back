@@ -1,8 +1,6 @@
 const MasterService = require("../services/MasterService");
 const errorGenerator = require("../utils/errorGenerator");
-// const jwt = require("jsonwebtoken");
-// const UserService = require("../services/UserService");
-// const { SECRET_KEY } = process.env;
+
 
 const sendMasters = async (req, res) => {
   try {
@@ -14,10 +12,8 @@ const sendMasters = async (req, res) => {
   }
 };
 
-const signUp = async (req, res, next) => {
+const signUpDirect = async (req, res, next) => {
   try {
-    const { Authorization } = req.headers;
-
     const {
       name,
       email,
@@ -28,51 +24,73 @@ const signUp = async (req, res, next) => {
       detailAddress,
     } = req.body;
 
-    if (typeof Authorization === "undefined") {
-      if (
-        !name ||
-        typeof name !== "string" ||
-        !email ||
-        typeof email !== "string" ||
-        !password ||
-        typeof password !== "string" ||
-        !phoneNumber ||
-        !lessonCatID ||
-        typeof lessonCatID !== "object" ||
-        !address ||
-        !detailAddress
-      ) {
-        throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
-      }
-    } else {
-      if (
-        typeof password !== "string" ||
-        !phoneNumber ||
-        !lessonCatID ||
-        typeof lessonCatID !== "object" ||
-        !address ||
-        !detailAddress
-      ) {
-        throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
-      }
+    if (
+      !name ||
+      typeof name !== "string" ||
+      !email ||
+      typeof email !== "string" ||
+      !password ||
+      typeof password !== "string" ||
+      !phoneNumber ||
+      !lessonCatID ||
+      typeof lessonCatID !== "object" ||
+      !address ||
+      !detailAddress ||
+      typeof address !== typeof detailAddress
+    ) {
+      throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
     }
-
-    const newMaster = await MasterService.signUp(
+    
+    await MasterService.signUpDirect(
       name,
       email,
       password,
       phoneNumber,
-      Authorization,
       lessonCatID,
       address,
       detailAddress
     );
 
-    return res.status(201).json({
-      message: "SIGNUP_SUCCESS",
-      masterID: newMaster.id,
-      userID: newMaster.user_id,
-    });
+    return res.status(201).json({ message: "SIGNUP_SUCCESS" });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+const signUp = async (req, res, next) => {
+  try {
+    const { token } = req.headers;
+
+    const {
+      phoneNumber,
+      lessonCatID,
+      address,
+      detailAddress
+    } = req.body;
+
+    if (!token) {
+      throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
+    }
+
+    if (
+      !phoneNumber ||
+      !lessonCatID ||
+      typeof lessonCatID !== "object" ||
+      !address ||
+      !detailAddress
+    ) {
+      throw await errorGenerator({ statusCode: 400, message: "KEY_ERROR" });
+    }
+
+    await MasterService.signUp(
+      token,
+      phoneNumber,
+      lessonCatID,
+      address,
+      detailAddress
+    );
+
+    return res.status(201).json({ message: "SIGNUP_SUCCESS" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -132,6 +150,7 @@ const sendMasterDetail = async (req, res) => {
 module.exports = {
   sendMasters,
   signUp,
+  signUpDirect,
   getMasterProfile,
   setMasterProfile,
   getMastersByCategory,
