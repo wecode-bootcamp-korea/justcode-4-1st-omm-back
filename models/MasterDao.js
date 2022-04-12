@@ -27,16 +27,11 @@ const getMasters = async (search) => {
       },
     },
   };
-  if (addressId === "null" && lessonId === "null") {
-    return await prisma.masters.findMany(data);
-  } else if (addressId !== "null" && lessonId === "null") {
+  if (addressId !== "null" && lessonId !== "null") {
     data.where = {
       detailAddress: {
         id: Number(addressId),
       },
-    };
-  } else if (addressId === "null" && lessonId !== "null") {
-    data.where = {
       mastersCategories: {
         some: {
           lessonCategories: {
@@ -45,11 +40,14 @@ const getMasters = async (search) => {
         },
       },
     };
-  } else {
+  } else if (addressId !== "null" && lessonId === "null") {
     data.where = {
       detailAddress: {
         id: Number(addressId),
       },
+    };
+  } else if (addressId === "null" && lessonId !== "null") {
+    data.where = {
       mastersCategories: {
         some: {
           lessonCategories: {
