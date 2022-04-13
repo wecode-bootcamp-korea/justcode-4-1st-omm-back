@@ -5,8 +5,7 @@ const validateToken = require("../middleware/userValidateToken");
 const ImageController = require("../controllers/ImageController");
 
 // POST
-// router.post("/:masterId/:reviewId",validateToken, ImageController.uploadReviewImage);
-router.post("/:masterId/:reviewId", ImageController.uploadReviewImage);
+router.post("/", validateToken, ImageController.uploadReviewImage);
 
 
 module.exports = router;

@@ -7,22 +7,20 @@ const ImageService = require("../services/ImageService");
 const uploadReviewImage = async (req, res, next) => {
   try {
 
-    const masterId = req.params.masterId;
-    const reviewId = req.params.reviewId;
+    const { masterid, reviewid } = req.headers;
     
     // upload 폴더 지정 (없으면 생성)
     try {
-      fs.readdirSync(`./data/uploads/master${masterId}/review${reviewId}`)
+      fs.readdirSync(`data/uploads/master${masterid}/review${reviewid}`)
     } catch (error) {
-      console.log(`./data/uploads/master${masterId}/review${reviewId} 폴더를 생성합니다.`)
-      fs.mkdirSync(`./data/uploads/master${masterId}/review${reviewId}`, {recursive: true}, err => {console.log(err)})
+      fs.mkdirSync(`data/uploads/master${masterid}/review${reviewid}`, {recursive: true}, err => {console.log(err)})
     }
 
     const upload = multer({
       storage: multer.diskStorage({
         // 업로드된 이미지 저장 경로 지정
         destination(req, file, cb) {
-          cb(null, `./data/uploads/master${masterId}/review${reviewId}`);
+          cb(null, `data/uploads/master${masterid}/review${reviewid}`);
         },
         // 업로드된 이미지 파일 이름 지정
         filename(req, file, cb) {
@@ -41,9 +39,9 @@ const uploadReviewImage = async (req, res, next) => {
       }
     })
 
-    const reviewImageAddr = `data/uploads/${masterId}/${reviewId}`;
+    const reviewImageAddr = `data/uploads/master${masterid}/review${reviewid}`;
 
-    await ImageService.uploadReviewImage(reviewId, reviewImageAddr);
+    await ImageService.uploadReviewImage(reviewid, reviewImageAddr);
     return res.status(200).json({ message: "SUCCESS" });
   } catch (err) {
     res.status(err.statusCode || 500).json({ message: err.message });
