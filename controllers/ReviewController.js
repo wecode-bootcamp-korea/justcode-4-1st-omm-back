@@ -1,25 +1,27 @@
 const ReviewService = require("../services/ReviewService");
 
-const sendPreview = async (req, res, next) => {
+const getReviews = async (req, res) => {
   try {
-    const masterId = req.params.id;
-    const reviews = await ReviewService.sendPreview(masterId);
+    const { masterId, limit } = req.query;
+    const reviews = await ReviewService.getReviews(masterId, limit);
 
-    return res.status(200).json({ message: "SUCCESS", reviews });
-  } catch (err) {
-    res.status(err.statusCode || 500).json({ message: err.message });
+    return res.status(200).json({ message: "SUCCESS", reviews: reviews });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
-const sendReviews = async (req, res, next) => {
+const makeReview = async (req, res) => {
   try {
-    const masterId = req.params.id;
-    const reviews = await ReviewService.sendReviews(masterId);
+    const { masterid, userid } = req.headers;
+    const { review } = req.body;
 
-    return res.status(200).json({ message: "SUCCESS", reviews });
-  } catch (err) {
-    res.status(err.statusCode || 500).json({ message: err.message });
+    const reviews = await ReviewService.makeReview(masterid, userid, review)
+    return res.status(200).json({ message: "SUCCESS", reviews: reviews})
+
+  } catch (error) {
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
-module.exports = { sendPreview, sendReviews };
+module.exports = { getReviews, makeReview };
