@@ -4,7 +4,9 @@ const router = express.Router();
 const ReviewController = require("../controllers/ReviewController");
 
 // GET
-router.get("/:id/pre", ReviewController.sendPreview);
-router.get("/:id", ReviewController.sendReviews);
+router.get("/", ReviewController.getReviews);
+
+// POST
+router.post("/", ReviewController.makeReview);
 
 module.exports = router;
