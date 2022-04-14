@@ -9,10 +9,12 @@
     "bcrypt": "^5.0.1",
     "jsonwebtoken": "^8.5.1",
     "nodemon": "^2.0.15",
+    "pm2": "5.2.0",
     "prisma": "^3.11.1"
   },
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "distribute": "npm i && prisma generate && pm2 start server.js --name omm-back -i max"
   },
   "name": "justcode-4-1st-omm-back",
   "version": "1.0.0",
