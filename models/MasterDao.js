@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { use } = require("../routes/MasterRoute");
 
 const prisma = new PrismaClient();
 
@@ -85,7 +86,7 @@ const createMaster = async (userID, name, addressID, detailAddressID) => {
   });
 };
 
-const insertMasterCat = async (masterID, lessonCatID) => {
+const makeMasterMainCategories = async (masterID, lessonCatID) => {
   console.log(lessonCatID);
   return lessonCatID.map(async (catID) => {
     await prisma.$queryRaw`
@@ -207,11 +208,76 @@ const isMaster = async (masterID) => {
   `;
 };
 
+const createUserDirectMaster = async (
+  inputName,
+  inputEmail,
+  inputPW,
+  inputPhone
+) => {
+  return await prisma.users.create({
+    data: {
+      name: inputName,
+      email: inputEmail,
+      password: inputPW,
+      phone_number: inputPhone,
+    },
+  });
+};
+
+const upgradeUserStatus = async (userID, inputPhone) => {
+  return await prisma.$queryRaw`
+    UPDATE users SET phone_number = ${inputPhone}
+    WHERE id = ${userID};
+  `;
+};
+
+const findUserInfo = async (inputEmail, inputPhone) => {
+  return await prisma.$queryRaw`
+    SELECT id, name
+    FROM users
+    WHERE users.email = ${inputEmail} 
+    OR users.phone_number = ${inputPhone};
+  `;
+};
+
+const findUserName = async (userId) => {
+  return await prisma.$queryRaw`
+    SELECT name
+    FROM users
+    WHERE id = ${userId};
+  `;
+};
+
+const getUserByEmail = async (email) => {
+  return await prisma.$queryRaw`
+    select id, password from users where email= ${email};`;
+};
+
+const crossCheckAddress = async (detailAddress) => {
+  return await prisma.$queryRaw`
+    SELECT address_id 
+    FROM detail_address
+    WHERE id = ${detailAddress};
+  `;
+};
+
+const rollBackSignUp = async (userId) => {
+  return await prisma.$queryRaw`
+    DELETE FROM users WHERE id = ${userId};
+  `;
+};
+
+const rollBackUserStatus = async (userId) => {
+  return await prisma.$queryRaw`
+    UPDATE users SET phone_number = null WHERE id = ${userId};
+  `;
+};
+
 module.exports = {
   getMasters,
   findMasterInfo,
   createMaster,
-  insertMasterCat,
+  makeMasterMainCategories,
   findMasterAddress,
   sendMasterDetail,
   getMasterProfile,
@@ -219,4 +285,12 @@ module.exports = {
   getMasterByUserId,
   getMastersByCategory,
   isMaster,
+  createUserDirectMaster,
+  upgradeUserStatus,
+  findUserInfo,
+  findUserName,
+  getUserByEmail,
+  crossCheckAddress,
+  rollBackSignUp,
+  rollBackUserStatus,
 };

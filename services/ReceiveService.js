@@ -9,4 +9,9 @@ const getReceive = async (userId) => {
   return objArrays;
 };
 
-module.exports = { getReceive};
+const setReceive = async (ended_at) =>{
+  deleteRequest = await ReceiveDao.setReceive(ended_at);
+  return deleteRequest;
+}
+
+module.exports = { getReceive, setReceive};
