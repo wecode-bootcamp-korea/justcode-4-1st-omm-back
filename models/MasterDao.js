@@ -1,5 +1,4 @@
 const { PrismaClient } = require("@prisma/client");
-const { use } = require("../routes/MasterRoute");
 
 const prisma = new PrismaClient();
 
